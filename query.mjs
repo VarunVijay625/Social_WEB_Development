@@ -19,7 +19,7 @@ async function do_query() {
         const webRef = collection(db, "Local Web")
         // varun_id is the id provided by the user
         // varun_column is the column provided by the user
-        const q = query(webRef, where('ID', '==', 2));
+        const q = query(webRef, where('Unique ID', '==', 2));
         const snapshot = await getDocs(q);
         if (snapshot.empty) {
             console.log('No matching documents.');
