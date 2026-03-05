@@ -1,0 +1,42 @@
+body {
+    background-color: #0B5710;
+    color: #FFC800;
+    font-family: arial;
+    letter-spacing: .5px;
+}
+
+h1 {
+    color: #FFC800;
+    font-family: tahoma, verdana, segoe, sans-serif;
+    letter-spacing: 2px;
+}
+
+input[type=text] {
+    background-color: #B9D0B9;
+}
+
+input[type=submit] {
+    background-color: #B9D0B9;
+}
+
+.login_page {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.index_page {
+    select {
+        background-color: #B9D0B9;
+    }
+    select>option {
+        background-color: #B9D0B9;
+    }
+    input[type="checkbox"] {
+        accent-color: #FFC800;
+    }
+    button {
+        background-color: #B9D0B9;
+    }
+}
