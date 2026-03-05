@@ -1,8 +1,28 @@
-import { authenticate } from './authentication.mjs';
-let db = authenticate();
-import { collection, query, where } from "firebase/firestore";
+import {collection, getFirestore, query, where} from "firebase/firestore";
+import { config } from "./config.mjs";
+import {initializeApp} from "firebase/app";
+import admin from "firebase-admin";
+import serviceAccount from "./service_account.json" with { type: 'json' };
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = config();
+
+const app = initializeApp(firebaseConfig);
+admin.initializeApp({
+      credential: admin.credential.cert(serviceAccount)
+    });
+const db = getFirestore(app);
+//const analytics= getAnalytics(app);
 const webRef = collection(db, "Local Web")
 // varun_id is the id provided by the user
 // varun_column is the column provided by the user
-const q = query(webRef, where("ID", "==", 2)).select("Friend");
-console.log(q);
+const q = webRef.where('ID', '==', 2).get();
+if (q.empty) {
+  console.log('No matching documents.');
+}
+q.forEach(doc => {
+  console.log(doc.id, '=>', doc.data());
+});
+//const q = query(webRef, where("ID", "==", 2))
+//q.select("Friend");
+//console.log(q);
