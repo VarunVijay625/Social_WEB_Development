@@ -33,14 +33,4 @@ async function do_query() {
         console.error("Query error: ", err);
     }
 }
-// const q = webRef.where('ID', '==', 2).get();
-// if (q.empty) {
-//   console.log('No matching documents.');
-// }
-// q.forEach(doc => {
-//   console.log(doc.id, '=>', doc.data());
-// });
-//const q = query(webRef, where("ID", "==", 2))
-//q.select("Friend");
-//console.log(q);
 let print_query = do_query();
