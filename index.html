@@ -4,13 +4,13 @@
 <head>
   <meta charset="UTF-8" />
   <link rel="stylesheet" href="styles.css">
-  <title>Form</title>
+  <title>Da Wab</title>
   <h1>Da Web</h1>
 
 </head>
-<body class="index_page">
+<body>
   <p>ID:
-    <select>
+    <select id="id-select">
       <option>0001</option><option>0002</option><option>0003</option>
       <option>0004</option><option>0005</option><option>0006</option>
       <option>0007</option><option>0008</option><option>0009</option>
@@ -21,7 +21,7 @@
     </select>
   </p>
   <p>
-    <select>
+    <select id="relation-select">
       <option>coworker</option>
       <option>dating</option>
       <option>friend</option>
@@ -32,15 +32,26 @@
       <option>teammate</option>
     </select>
   </p>
-  <p><input type="checkbox"> detail</p>
-  <p><button>submit</button></p>
-  
+  <p><input type="checkbox" id="detail-check"> detail</p>
+  <p><button onclick="handleSubmit()">submit</button></p>
+
   <hr>
 
-  <p>id: 0003</p>
-  <p>id: 0007</p>
-  <p>id: 0013</p>
-  <p>id: 0021</p>
+  <div id="results"></div>
 
+  <script type="module">
+    import { do_query } from "./query.mjs";
+
+    window.handleSubmit = async function () {
+      const id = parseInt(document.getElementById("id-select").value);
+      const relation = document.getElementById("relation-select").value;
+      const resultsDiv = document.getElementById("results");
+      resultsDiv.innerHTML = "loading...";
+      const names = await do_query(id, relation);
+      resultsDiv.innerHTML = names.length
+        ? names.map(name => `<p>${name}</p>`).join("")
+        : "<p>No results.</p>";
+    };
+  </script>
 </body>
 </html>
