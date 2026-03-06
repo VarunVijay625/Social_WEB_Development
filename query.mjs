@@ -26,11 +26,24 @@ async function do_query() {
             return;
         }
 
-        snapshot.forEach(doc => {
-            const data = doc.data();
+        for (let doc_snapshot of snapshot.docs) {
+            const data = doc_snapshot.data();
             // for Varun and Ellie: write logic to pass the user input for column where it says .Friend
-            console.log(doc.id, '=>', data.Friend);
-        });
+            console.log(doc_snapshot.id, '=>', data.Friend);
+
+            // printing names??
+            for (const friendID of data.Friend) {
+                const name_q = query(webRef, where('Unique ID', '==', friendID));
+                const name_snapshot = await getDocs(name_q);
+                if (name_snapshot.empty) {
+                    console.log("No matching documents.");
+                }
+                for (const name_doc of name_snapshot.docs) {
+                    const name_data = name_doc.data();
+                    console.log(friendID, '=>', name_data.Name);
+                }
+            }
+        }
     } catch(err) {
         console.error("Query error: ", err);
     }
