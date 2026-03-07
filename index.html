@@ -1,26 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
   <link rel="stylesheet" href="styles.css">
   <title>Da Wab</title>
-  <h1>Da Web</h1>
-
+  <h1>The Web</h1>
 </head>
 <body>
-  <p>ID:
-    <select id="id-select">
-      <option>0001</option><option>0002</option><option>0003</option>
-      <option>0004</option><option>0005</option><option>0006</option>
-      <option>0007</option><option>0008</option><option>0009</option>
-      <option>0010</option><option>0011</option><option>0012</option>
-      <option>0013</option><option>0014</option><option>0015</option>
-      <option>0016</option><option>0017</option><option>0018</option>
-      <option>0019</option><option>0020</option><option>0021</option>
+  <p>Name:
+    <select id="name-select">
+      <option>Ellie G</option><option>Jes B</option><option>Frederique</option>
+      <option>James D</option><option>Paige S</option><option>Varun V.</option>
+      <option>Grace T</option><option>Atticus T</option><option>Ruth S</option>
+      <option>Amelia C</option><option>Nessa K</option><option>Lauren K</option>
+      <option>Callie L</option><option>Lindsay H</option><option>Hannah D</option>
+      <option>Mindy Y</option><option>Andie B</option><option>Jo H</option>
+      <option>Elisabeth K</option><option>Brandon A</option><option>Ellie A</option>
     </select>
   </p>
-  <p>
+  <p>Relation:
     <select id="relation-select">
       <option>coworker</option>
       <option>dating</option>
@@ -33,25 +31,13 @@
     </select>
   </p>
   <p><input type="checkbox" id="detail-check"> detail</p>
-  <p><button onclick="handleSubmit()">submit</button></p>
+  <p><button id="submit-btn">submit</button></p>
 
   <hr>
 
   <div id="results"></div>
-
-  <script type="module">
-    import { do_query } from "./query.mjs";
-
-    window.handleSubmit = async function () {
-      const id = parseInt(document.getElementById("id-select").value);
-      const relation = document.getElementById("relation-select").value;
-      const resultsDiv = document.getElementById("results");
-      resultsDiv.innerHTML = "loading...";
-      const names = await do_query(id, relation);
-      resultsDiv.innerHTML = names.length
-        ? names.map(name => `<p>${name}</p>`).join("")
-        : "<p>No results.</p>";
-    };
-  </script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
