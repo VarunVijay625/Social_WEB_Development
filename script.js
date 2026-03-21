@@ -151,6 +151,30 @@ async function do_query(id, column) {
     }
 }
 
+//function create_account_w_name(name) {
+
+//}
+
+async function create_account_wo_name() {
+    try {
+        const webRef = db.collection("Local Web");
+        const snapshot = await webRef.get();
+        if (snapshot.empty) {
+            console.log('No matching documents.');
+            return [];
+        }
+        const infos = [];
+        snapshot.forEach(doc =>{
+            names.push(doc.id, '=>', doc.data()["Unique ID"])
+            console.log(doc.id, '=>', doc.data()["Unique ID"]);
+        });
+        return infos;
+    } catch(err) {
+        console.error("Query error: ", err);
+        return [];
+    }
+}
+
 let people = [
     'Ellie G',
     'Jes B',
@@ -184,5 +208,15 @@ document.getElementById("submit-btn").addEventListener("click", async () => {
     const names = await do_query(id, relation);
     resultsDiv.innerHTML = names.length
         ? names.map(name => `<p>${name}</p>`).join("")
+        : "<p>No results.</p>";
+});
+
+document.getElementById("go-to-check").addEventListener("submit", async () => {
+    const name = document.getElementById("choice-name-select").value;
+    const resultsDiv = document.getElementById("login-info");
+    resultsDiv.innerHTML = "loading...";
+    const infos = await create_account_wo_name(name);
+    resultsDiv.innerHTML = infos.length
+        ? infos.map(info => `<p>${info}</p>`).join("")
         : "<p>No results.</p>";
 });
