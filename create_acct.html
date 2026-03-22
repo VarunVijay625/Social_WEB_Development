@@ -19,7 +19,7 @@
           <option>My name is not listed</option>
         </select>
     </p>
-    <form id="go-to-check" action="check.html">
+    <form id="account-info">
         <label for="name">First Name + Last Initial:</label>
         <input type="text" id="name" name="name_input"><br><br>
         <label for="username">Username:</label>
@@ -28,4 +28,8 @@
         <input type="text" id="password" name="password_input"><br><br>
         <input type="submit">
     </form>
+    <div id="login-info"></div>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+    <script src="script.js"></script>
 </body>

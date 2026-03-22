@@ -155,7 +155,7 @@ async function do_query(id, column) {
 
 //}
 
-async function create_account_wo_name() {
+async function create_account_wo_name(user, pass, name) {
     try {
         const webRef = db.collection("Local Web");
         const snapshot = await webRef.get();
@@ -163,12 +163,34 @@ async function create_account_wo_name() {
             console.log('No matching documents.');
             return [];
         }
-        const infos = [];
+        const user_ids = [];
+        const unique_ids = [];
         snapshot.forEach(doc =>{
-            names.push(doc.id, '=>', doc.data()["Unique ID"])
+            user_ids.push(Number(doc.id));
+            unique_ids.push(Number(doc.data()["Unique ID"]));
             console.log(doc.id, '=>', doc.data()["Unique ID"]);
         });
-        return infos;
+        const max_user_id = Math.max(user_ids)
+        const max_unique_id = Math.max(unique_ids);
+        const new_id = max_unique_id + 1;
+        const new_user_id = String(max_user_id + 1);
+        const new_acct_info = {
+            Coworker: [],
+            Dating: [],
+            Friend: [],
+            ["Have Met"]: [],
+            Name: name,
+            Password: pass,
+            Roommate: [],
+            ["Secret 3rd"]: [],
+            Supervisor: [],
+            Teammate: [],
+            ["Unique ID"]: new_id,
+            Username: user
+        };
+        const res = await db.collection('Local Web').doc(new_user_id).set(new_acct_info)
+
+        return new_acct_info;
     } catch(err) {
         console.error("Query error: ", err);
         return [];
@@ -198,25 +220,33 @@ let people = [
     'Brandon A',
     'Ellie A'
 ]
+const submit_btn = document.getElementById("submit-btn")
+if (submit_btn) {
+    submit_btn.addEventListener("click", async () => {
+        const name = document.getElementById("name-select").value
+        const id = people.indexOf(name) + 1;
+        const relation = document.getElementById("relation-select").value;
+        const resultsDiv = document.getElementById("results");
+        resultsDiv.innerHTML = "loading...";
+        const names = await do_query(id, relation);
+        resultsDiv.innerHTML = names.length
+            ? names.map(name => `<p>${name}</p>`).join("")
+            : "<p>No results.</p>";
+    });
+}
 
-document.getElementById("submit-btn").addEventListener("click", async () => {
-    const name = document.getElementById("name-select").value
-    const id = people.indexOf(name) + 1;
-    const relation = document.getElementById("relation-select").value;
-    const resultsDiv = document.getElementById("results");
-    resultsDiv.innerHTML = "loading...";
-    const names = await do_query(id, relation);
-    resultsDiv.innerHTML = names.length
-        ? names.map(name => `<p>${name}</p>`).join("")
-        : "<p>No results.</p>";
-});
-
-document.getElementById("go-to-check").addEventListener("submit", async () => {
-    const name = document.getElementById("choice-name-select").value;
-    const resultsDiv = document.getElementById("login-info");
-    resultsDiv.innerHTML = "loading...";
-    const infos = await create_account_wo_name(name);
-    resultsDiv.innerHTML = infos.length
-        ? infos.map(info => `<p>${info}</p>`).join("")
-        : "<p>No results.</p>";
-});
+const create_account_form = document.getElementById("account-info")
+if (create_account_form) {
+    create_account_form.addEventListener("submit", async (page) => {
+        page.preventDefault();
+        const user = document.getElementById("account-info").elements[1].value;
+        const name = document.getElementById("account-info").elements[0].value;
+        const pass = document.getElementById("account-info").elements[2].value;
+        const infoDiv = document.getElementById("login-info");
+        infoDiv.innerHTML = "loading...";
+        const infos = await create_account_wo_name(user, pass, name);
+        infoDiv.innerHTML = infos.length
+            ? infos.map(info => `<p>${info}</p>`).join("")
+            : "<p>No results.</p>";
+    });
+}
