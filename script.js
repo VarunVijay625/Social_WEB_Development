@@ -170,10 +170,12 @@ async function create_account_wo_name(user, pass, name) {
             unique_ids.push(Number(doc.data()["Unique ID"]));
             console.log(doc.id, '=>', doc.data()["Unique ID"]);
         });
-        const max_user_id = Math.max(user_ids)
-        const max_unique_id = Math.max(unique_ids);
+        const max_user_id = Math.max(...user_ids);
+        console.log(max_user_id)
+        const max_unique_id = Math.max(...unique_ids);
+        console.log(max_unique_id)
         const new_id = max_unique_id + 1;
-        const new_user_id = String(max_user_id + 1);
+        const new_user_id = "00" + String(max_user_id + 1);
         const new_acct_info = {
             Coworker: [],
             Dating: [],
@@ -191,6 +193,29 @@ async function create_account_wo_name(user, pass, name) {
         const res = await db.collection('Local Web').doc(new_user_id).set(new_acct_info)
 
         return new_acct_info;
+    } catch(err) {
+        console.error("Query error: ", err);
+        return [];
+    }
+}
+
+async function create_account_w_name(user, pass, name) {
+    try {
+        const webRef = db.collection("Local Web");
+        const snapshot = await webRef.get();
+        if (snapshot.empty) {
+            console.log('No matching documents.');
+            return [];
+        }
+        let id_for_name = null;
+        snapshot.forEach(doc =>{
+            if (doc.data().Name == name) {
+                id_for_name = doc.id;
+            }
+        });
+        const update_user = await webRef.doc(id_for_name).update({Username: user});
+        const update_pass = await webRef.doc(id_for_name).update({Password: pass});
+        return name;
     } catch(err) {
         console.error("Query error: ", err);
         return [];
@@ -242,11 +267,19 @@ if (create_account_form) {
         const user = document.getElementById("account-info").elements[1].value;
         const name = document.getElementById("account-info").elements[0].value;
         const pass = document.getElementById("account-info").elements[2].value;
+        const dropdown_name = document.getElementById("choice-name-select").value;
         const infoDiv = document.getElementById("login-info");
         infoDiv.innerHTML = "loading...";
-        const infos = await create_account_wo_name(user, pass, name);
-        infoDiv.innerHTML = infos.length
-            ? infos.map(info => `<p>${info}</p>`).join("")
-            : "<p>No results.</p>";
+        if (dropdown_name == "My name is not listed") {
+            const infos = await create_account_wo_name(user, pass, name);
+        }
+        else {
+            const infos = await create_account_w_name(user, pass, dropdown_name);
+        }
+        infoDiv.innerHTML = '<h1>Does this look correct?</h1>' +
+            `<p>name: ${name}</p>` +
+            `<p>username: ${user}</p>` +
+            `<p>password: ${pass}</p>` +
+            `<a href="index.html" class="button-link">Yes</a>`
     });
 }
