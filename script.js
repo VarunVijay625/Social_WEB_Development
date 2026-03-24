@@ -8,9 +8,12 @@ const firebaseConfig = {
     measurementId: "G-S0J91M5KEQ"
 };
 
+// Initialize Cloud Firestore
 const app = firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
+// A function that queries the database for people who have a specific relationship with a specific person
+// example: if the user selects "Jes B" and "Friend" do_query will return the friends of Jes B
 async function do_query(id, column) {
     try {
         const webRef = db.collection("Local Web");
@@ -151,10 +154,8 @@ async function do_query(id, column) {
     }
 }
 
-//function create_account_w_name(name) {
-
-//}
-
+// A function that "creates an account" for the user when the user's name is not already in the database
+// This function creates a new document in the firestore with the username, password, and name provided by the user and empty relationship arrays
 async function create_account_wo_name(user, pass, name) {
     try {
         const webRef = db.collection("Local Web");
@@ -199,6 +200,8 @@ async function create_account_wo_name(user, pass, name) {
     }
 }
 
+// A function that "creates an account" for the user when the user's name does not exist in the database
+// this edits the Password and Username field for an existing document
 async function create_account_w_name(user, pass, name) {
     try {
         const webRef = db.collection("Local Web");
@@ -245,6 +248,8 @@ let people = [
     'Brandon A',
     'Ellie A'
 ]
+
+// Display do_query results on index.html
 const submit_btn = document.getElementById("submit-btn")
 if (submit_btn) {
     submit_btn.addEventListener("click", async () => {
@@ -260,6 +265,7 @@ if (submit_btn) {
     });
 }
 
+// Create an account using either of the create account functions
 const create_account_form = document.getElementById("account-info")
 if (create_account_form) {
     create_account_form.addEventListener("submit", async (page) => {
