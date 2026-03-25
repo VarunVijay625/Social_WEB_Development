@@ -33,7 +33,7 @@ async function loadGraph() {
     snapshot.forEach(doc => {
         const data = doc.data();
         nodes.push({ id: data["Unique ID"], name: data.Name });
-
+        console.log(nodes)
         relationFields.forEach(rel => {
             if(data[rel]){
                 data[rel].forEach(targetId => {

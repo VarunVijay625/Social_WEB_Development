@@ -8,6 +8,37 @@ const firebaseConfig = {
     measurementId: "G-S0J91M5KEQ"
 };
 
+//FIXED: NO MORE HARDCODING
+const people = [];
+const accts =[]
+async function loadDropIndex(people){
+    const snapshot = await db.collection("Local Web").get();
+    snapshot.forEach(doc => {
+        const data = doc.data();
+        people.push({ id: data["Unique ID"], name: data.Name });
+    });
+    var optionHTML = "";
+    for (var i = 0; i < people.length; i++) {
+    optionHTML += `<option value="${people[i].name}">${people[i].name}</option>`;
+    }
+    document.getElementById("names").innerHTML = optionHTML;
+}
+async function loadDropAcct(people){
+    console.log(people)
+        const snapshot = await db.collection("Local Web").get();
+    snapshot.forEach(doc => {
+        const data = doc.data();
+        people.push({ id: data["Unique ID"], name: data.Name });
+    });
+    console.log(people)
+    var optionHTML = "";
+    for (var i = 0; i < people.length; i++) {
+    optionHTML += `<option value="${people[i].name}">${people[i].name}</option>`;
+    }
+    optionHTML += `<option value ="Not Listed">My name is not listed</option>`
+    document.getElementById("choice-nam-select").innerHTML = optionHTML;
+}
+
 const app = firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
@@ -197,29 +228,9 @@ async function create_account_wo_name(user, pass, name) {
     }
 }
 
-let people = [
-    'Ellie G',
-    'Jes B',
-    'Frederique N',
-    'James D',
-    'Paige S',
-    'Varun V.',
-    'Grace T',
-    'Atticus T',
-    'Ruth S',
-    'Amelia C',
-    'Nessa K',
-    'Lauren K',
-    'Callie L',
-    'Lindsay H',
-    'Hannah D',
-    'Mindy Y',
-    'Andie B',
-    'Jo H',
-    'Elisabeth K',
-    'Brandon A',
-    'Ellie A'
-]
+
+
+
 const submit_btn = document.getElementById("submit-btn")
 if (submit_btn) {
     submit_btn.addEventListener("click", async () => {
@@ -250,3 +261,5 @@ if (create_account_form) {
             : "<p>No results.</p>";
     });
 }
+loadDropIndex(people)
+loadDropAcct(accts)
