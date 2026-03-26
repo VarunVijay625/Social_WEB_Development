@@ -256,31 +256,6 @@ async function create_account_w_name(user, pass, name) {
         return [];
     }
 }
-
-let people = [
-    'Ellie G',
-    'Jes B',
-    'Frederique N',
-    'James D',
-    'Paige S',
-    'Varun V.',
-    'Grace T',
-    'Atticus T',
-    'Ruth S',
-    'Amelia C',
-    'Nessa K',
-    'Lauren K',
-    'Callie L',
-    'Lindsay H',
-    'Hannah D',
-    'Mindy Y',
-    'Andie B',
-    'Jo H',
-    'Elisabeth K',
-    'Brandon A',
-    'Ellie A'
-]
-
 // Display do_query results on index.html
 const submit_btn = document.getElementById("submit-btn")
 if (submit_btn) {
