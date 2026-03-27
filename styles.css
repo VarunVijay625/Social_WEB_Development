@@ -54,3 +54,38 @@ input[type=submit] {
 .button-link:hover {
   background-color: #0056b3;
 }
+
+#logo {
+    color: #FFC800;
+    font-family: tahoma, verdana, segoe, sans-serif;
+    letter-spacing: 2px;
+    font-size: 40px;
+    font-weight: bold;
+}
+
+ul {
+    position: sticky;
+    top: 0;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: #FFC800;
+}
+
+ul li {
+    display: inline-block;
+}
+
+.nav-links li a {
+    display: inline-block;
+    color: #0B5710;
+    padding: 10px 15px;
+    transition: background-color 0.3s;
+    font-weight: bold;
+}
+
+.nav-links li a:hover {
+    background-color: #B08C00;
+    color: #0B5710;
+}
