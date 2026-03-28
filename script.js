@@ -302,7 +302,7 @@ if (login_form) {
         const submit_btn = document.getElementById("submit-btn")
         if (submit_btn) {
             submit_btn.addEventListener("click", async () => {
-                const name = document.getElementById("name-select").value
+                const name = document.getElementById("names").value
                 const id = people.indexOf(name) + 1;
                 const relation = document.getElementById("relation-select").value;
                 const resultsDiv = document.getElementById("results");
