@@ -185,116 +185,157 @@ async function do_query(id, column) {
         return [];
     }
 }
+// A function that "handles login" by checking if the username and password  entered matches the ones in the dataset
+// If the username and password are in the database, the user will log in successfully
+// If not in the database, the user will be redirected to the create_account page
+
+async function login_page(user, pass) {
+    try {
+        const webRef = db.collection("Local Web");
+        const snapshot = await webRef.get();
+        if (snapshot.empty) {
+            console.log('No matching documents.');
+            return [];
+        }
+        let user_found = false;
+        snapshot.forEach(doc => {
+            const data = doc.data();
+            if (data.Username == user && data.Password == pass) {
+                user_found = true;
+            }
+            if (user_found) {
+                window.location.replace("index.html");
+            } else {
+                document.getElementById("error").innerHTML = "Invalid credentials.\n You are now being redirected to create an account.";
+                window.location.replace("create_acct.html");
+            }
+
+        });
+    }
+    catch (err){
+        console.error("Query error", err);
+    }
+}
+
+const login_form = document.getElementById("login_page")
+if (login_form) {
+    login_form.addEventListener("submit", async (page) => {
+        page.preventDefault();
+        const user = document.getElementById("username").value;
+        const pass = document.getElementById("password").value;
+        login_page(user,pass);
+    });
+}
 
 // A function that "creates an account" for the user when the user's name is not already in the database
 // This function creates a new document in the firestore with the username, password, and name provided by the user and empty relationship arrays
-async function create_account_wo_name(user, pass, name) {
-    try {
-        const webRef = db.collection("Local Web");
-        const snapshot = await webRef.get();
-        if (snapshot.empty) {
-            console.log('No matching documents.');
-            return [];
-        }
-        const user_ids = [];
-        const unique_ids = [];
-        snapshot.forEach(doc =>{
-            user_ids.push(Number(doc.id));
-            unique_ids.push(Number(doc.data()["Unique ID"]));
-            console.log(doc.id, '=>', doc.data()["Unique ID"]);
-        });
-        const max_user_id = Math.max(...user_ids);
-        console.log(max_user_id)
-        const max_unique_id = Math.max(...unique_ids);
-        console.log(max_unique_id)
-        const new_id = max_unique_id + 1;
-        const new_user_id = "00" + String(max_user_id + 1);
-        const new_acct_info = {
-            Coworker: [],
-            Dating: [],
-            Friend: [],
-            ["Have Met"]: [],
-            Name: name,
-            Password: pass,
-            Roommate: [],
-            ["Secret 3rd"]: [],
-            Supervisor: [],
-            Teammate: [],
-            ["Unique ID"]: new_id,
-            Username: user
-        };
-        const res = await db.collection('Local Web').doc(new_user_id).set(new_acct_info)
+        async function create_account_wo_name(user, pass, name) {
+            try {
+                const webRef = db.collection("Local Web");
+                const snapshot = await webRef.get();
+                if (snapshot.empty) {
+                    console.log('No matching documents.');
+                    return [];
+                }
+                const user_ids = [];
+                const unique_ids = [];
+                snapshot.forEach(doc => {
+                    user_ids.push(Number(doc.id));
+                    unique_ids.push(Number(doc.data()["Unique ID"]));
+                    console.log(doc.id, '=>', doc.data()["Unique ID"]);
+                });
+                const max_user_id = Math.max(...user_ids);
+                console.log(max_user_id)
+                const max_unique_id = Math.max(...unique_ids);
+                console.log(max_unique_id)
+                const new_id = max_unique_id + 1;
+                const new_user_id = "00" + String(max_user_id + 1);
+                const new_acct_info = {
+                    Coworker: [],
+                    Dating: [],
+                    Friend: [],
+                    ["Have Met"]: [],
+                    Name: name,
+                    Password: pass,
+                    Roommate: [],
+                    ["Secret 3rd"]: [],
+                    Supervisor: [],
+                    Teammate: [],
+                    ["Unique ID"]: new_id,
+                    Username: user
+                };
+                const res = await db.collection('Local Web').doc(new_user_id).set(new_acct_info)
 
-        return new_acct_info;
-    } catch(err) {
-        console.error("Query error: ", err);
-        return [];
-    }
-}
+                return new_acct_info;
+            } catch (err) {
+                console.error("Query error: ", err);
+                return [];
+            }
+        }
 
 // A function that "creates an account" for the user when the user's name does not exist in the database
 // this edits the Password and Username field for an existing document
-async function create_account_w_name(user, pass, name) {
-    try {
-        const webRef = db.collection("Local Web");
-        const snapshot = await webRef.get();
-        if (snapshot.empty) {
-            console.log('No matching documents.');
-            return [];
-        }
-        let id_for_name = null;
-        snapshot.forEach(doc =>{
-            if (doc.data().Name == name) {
-                id_for_name = doc.id;
+        async function create_account_w_name(user, pass, name) {
+            try {
+                const webRef = db.collection("Local Web");
+                const snapshot = await webRef.get();
+                if (snapshot.empty) {
+                    console.log('No matching documents.');
+                    return [];
+                }
+                let id_for_name = null;
+                snapshot.forEach(doc => {
+                    if (doc.data().Name == name) {
+                        id_for_name = doc.id;
+                    }
+                });
+                const update_user = await webRef.doc(id_for_name).update({Username: user});
+                const update_pass = await webRef.doc(id_for_name).update({Password: pass});
+                return name;
+            } catch (err) {
+                console.error("Query error: ", err);
+                return [];
             }
-        });
-        const update_user = await webRef.doc(id_for_name).update({Username: user});
-        const update_pass = await webRef.doc(id_for_name).update({Password: pass});
-        return name;
-    } catch(err) {
-        console.error("Query error: ", err);
-        return [];
-    }
-}
+        }
+
 // Display do_query results on index.html
-const submit_btn = document.getElementById("submit-btn")
-if (submit_btn) {
-    submit_btn.addEventListener("click", async () => {
-        const name = document.getElementById("name-select").value
-        const id = people.indexOf(name) + 1;
-        const relation = document.getElementById("relation-select").value;
-        const resultsDiv = document.getElementById("results");
-        resultsDiv.innerHTML = "loading...";
-        const names = await do_query(id, relation);
-        resultsDiv.innerHTML = names.length
-            ? names.map(name => `<p>${name}</p>`).join("")
-            : "<p>No results.</p>";
-    });
-}
+        const submit_btn = document.getElementById("submit-btn")
+        if (submit_btn) {
+            submit_btn.addEventListener("click", async () => {
+                const name = document.getElementById("name-select").value
+                const id = people.indexOf(name) + 1;
+                const relation = document.getElementById("relation-select").value;
+                const resultsDiv = document.getElementById("results");
+                resultsDiv.innerHTML = "loading...";
+                const names = await do_query(id, relation);
+                resultsDiv.innerHTML = names.length
+                    ? names.map(name => `<p>${name}</p>`).join("")
+                    : "<p>No results.</p>";
+            });
+        }
 
 // Create an account using either of the create account functions
-const create_account_form = document.getElementById("account-info")
-if (create_account_form) {
-    create_account_form.addEventListener("submit", async (page) => {
-        page.preventDefault();
-        const user = document.getElementById("account-info").elements[1].value;
-        const name = document.getElementById("account-info").elements[0].value;
-        const pass = document.getElementById("account-info").elements[2].value;
-        const dropdown_name = document.getElementById("choice-name-select").value;
-        const infoDiv = document.getElementById("login-info");
-        infoDiv.innerHTML = "loading...";
-        if (dropdown_name == "My name is not listed") {
-            const infos = await create_account_wo_name(user, pass, name);
+        const create_account_form = document.getElementById("account-info")
+        if (create_account_form) {
+            create_account_form.addEventListener("submit", async (page) => {
+                page.preventDefault();
+                const user = document.getElementById("account-info").elements[1].value;
+                const name = document.getElementById("account-info").elements[0].value;
+                const pass = document.getElementById("account-info").elements[2].value;
+                const dropdown_name = document.getElementById("choice-name-select").value;
+                const infoDiv = document.getElementById("login-info");
+                infoDiv.innerHTML = "loading...";
+                if (dropdown_name == "My name is not listed") {
+                    const infos = await create_account_wo_name(user, pass, name);
+                } else {
+                    const infos = await create_account_w_name(user, pass, dropdown_name);
+                }
+                infoDiv.innerHTML = '<h1>Does this look correct?</h1>' +
+                    `<p>name: ${name}</p>` +
+                    `<p>username: ${user}</p>` +
+                    `<p>password: ${pass}</p>` +
+                    `<a href="index.html" class="button-link">Yes</a>`;
+            });
         }
-        else {
-            const infos = await create_account_w_name(user, pass, dropdown_name);
-        }
-        infoDiv.innerHTML = '<h1>Does this look correct?</h1>' +
-            `<p>name: ${name}</p>` +
-            `<p>username: ${user}</p>` +
-            `<p>password: ${pass}</p>` +
-            `<a href="index.html" class="button-link">Yes</a>`
-    });
-}
 loadDropIndex(people)
 loadDropAcct(accts)
