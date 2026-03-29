@@ -58,6 +58,7 @@ async function do_query(id, column) {
         const names = [];
 
         if(column === "friend"){
+            console.log("goes inside");
             for(const doc of snapshot.docs){
                 const data = doc.data();
                 console.log(doc.id, '=>', data.Friend);
@@ -303,11 +304,20 @@ if (login_form) {
         if (submit_btn) {
             submit_btn.addEventListener("click", async () => {
                 const name = document.getElementById("names").value
-                const id = people.indexOf(name) + 1;
+                let id = null;
+                let index = 0;
+                for (const p of people) {
+                    if (p.name === name) {
+                        id = people[index].id;
+                    }
+                    index += 1;
+                }
                 const relation = document.getElementById("relation-select").value;
                 const resultsDiv = document.getElementById("results");
                 resultsDiv.innerHTML = "loading...";
+                console.log(people);
                 const names = await do_query(id, relation);
+                console.log(names);
                 resultsDiv.innerHTML = names.length
                     ? names.map(name => `<p>${name}</p>`).join("")
                     : "<p>No results.</p>";
