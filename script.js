@@ -11,9 +11,9 @@ const firebaseConfig = {
 // Initialize Cloud Firestore
 
 //FIXED: NO MORE HARDCODING
-const people = [];
 const accts =[]
-async function loadDropIndex(people){
+const people =[]
+async function loadDropIndex(){
     const snapshot = await db.collection("Local Web").get();
     snapshot.forEach(doc => {
         const data = doc.data();
@@ -25,7 +25,7 @@ async function loadDropIndex(people){
     }
     document.getElementById("names").innerHTML = optionHTML;
 }
-async function loadDropAcct(people){
+async function loadDropAcct(){
     console.log(people)
         const snapshot = await db.collection("Local Web").get();
     snapshot.forEach(doc => {
@@ -38,6 +38,14 @@ async function loadDropAcct(people){
     optionHTML += `<option value="${people[i].name}">${people[i].name}</option>`;
     }
     optionHTML += `<option value ="Not Listed">My name is not listed</option>`
+    const targetElement = document.getElementById('choice-nam-select'); // Or whatever method you use
+    console.log('Target Element:', targetElement); // Check what this outputs
+
+    if (targetElement) {
+        targetElement.innerHTML = 'some value'; // This is likely line 41
+    } else {
+        console.error('Element not found. Check HTML ID or script placement.');
+    }
     document.getElementById("choice-nam-select").innerHTML = optionHTML;
 }
 
