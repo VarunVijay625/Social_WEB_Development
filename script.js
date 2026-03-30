@@ -23,7 +23,7 @@ async function loadDropIndex(){
     for (var i = 0; i < people.length; i++) {
     optionHTML += `<option value="${people[i].name}">${people[i].name}</option>`;
     }
-    optionHTML += `<option value="other">My name is not listed</option>`;
+    optionHTML += `<option value="My name is not listed">My name is not listed</option>`;
     document.getElementById("names").innerHTML = optionHTML;
 }
 async function loadDropAcct(){
@@ -344,6 +344,7 @@ if (login_form) {
                 const dropdown_name = document.getElementById("names").value;
                 const infoDiv = document.getElementById("login-info");
                 infoDiv.innerHTML = "loading...";
+                console.log(dropdown_name)
                 if (dropdown_name == "My name is not listed") {
                     const infos = await create_account_wo_name(user, pass, name);
                 } else {
