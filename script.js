@@ -23,11 +23,12 @@ async function loadDropIndex(){
     for (var i = 0; i < people.length; i++) {
     optionHTML += `<option value="${people[i].name}">${people[i].name}</option>`;
     }
+    optionHTML += `<option value="other">My name is not listed</option>`;
     document.getElementById("names").innerHTML = optionHTML;
 }
 async function loadDropAcct(){
     console.log(people)
-        const snapshot = await db.collection("Local Web").get();
+    const snapshot = await db.collection("Local Web").get();
     snapshot.forEach(doc => {
         const data = doc.data();
         people.push({ id: data["Unique ID"], name: data.Name });
@@ -38,7 +39,7 @@ async function loadDropAcct(){
     optionHTML += `<option value="${people[i].name}">${people[i].name}</option>`;
     }
     optionHTML += `<option value ="Not Listed">My name is not listed</option>`
-    const targetElement = document.getElementById('choice-nam-select'); // Or whatever method you use
+    const targetElement = document.getElementById("choice-nam-select"); // Or whatever method you use
     console.log('Target Element:', targetElement); // Check what this outputs
 
     if (targetElement) {
@@ -46,7 +47,7 @@ async function loadDropAcct(){
     } else {
         console.error('Element not found. Check HTML ID or script placement.');
     }
-    document.getElementById("choice-nam-select").innerHTML = optionHTML;
+    document.getElementById("names").innerHTML = optionHTML;
 }
 
 const app = firebase.initializeApp(firebaseConfig);
@@ -340,7 +341,7 @@ if (login_form) {
                 const user = document.getElementById("account-info").elements[1].value;
                 const name = document.getElementById("account-info").elements[0].value;
                 const pass = document.getElementById("account-info").elements[2].value;
-                const dropdown_name = document.getElementById("choice-name-select").value;
+                const dropdown_name = document.getElementById("names").value;
                 const infoDiv = document.getElementById("login-info");
                 infoDiv.innerHTML = "loading...";
                 if (dropdown_name == "My name is not listed") {
@@ -356,4 +357,3 @@ if (login_form) {
             });
         }
 loadDropIndex(people)
-loadDropAcct(accts)
