@@ -9,6 +9,12 @@ when navigating through the choice.html page:
 - The user also filled out the rest of the form: name + initial, username and password
 - After they hit submit and all of their info is directly entered to our database
 
+If user is in the database, but doesn't yet have an account, they can also create an account: 
+- First step is to click on create an account
+- When redirected to the account page the user chooses their name from the dropdown button
+- The user fills out the rest of the form with their information
+- When they hit submit, our database is updated with their username and password
+
 Current capabilities:  
 + User can create an account.  
 + User can see web based on current database.  
