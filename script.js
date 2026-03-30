@@ -13,40 +13,20 @@ const firebaseConfig = {
 //FIXED: NO MORE HARDCODING
 const accts =[]
 const people =[]
+//Function loadDropIndex takes the empty "people" array and reads the database's names and populates it bases on that
 async function loadDropIndex(){
     const snapshot = await db.collection("Local Web").get();
+    //read all documents and extract name to push onto 'people' array
     snapshot.forEach(doc => {
         const data = doc.data();
         people.push({ id: data["Unique ID"], name: data.Name });
     });
+    //create amalgam of option blocks to set innerhtml to equal based on people
     var optionHTML = "";
     for (var i = 0; i < people.length; i++) {
     optionHTML += `<option value="${people[i].name}">${people[i].name}</option>`;
     }
     optionHTML += `<option value="My name is not listed">My name is not listed</option>`;
-    document.getElementById("names").innerHTML = optionHTML;
-}
-async function loadDropAcct(){
-    console.log(people)
-    const snapshot = await db.collection("Local Web").get();
-    snapshot.forEach(doc => {
-        const data = doc.data();
-        people.push({ id: data["Unique ID"], name: data.Name });
-    });
-    console.log(people)
-    var optionHTML = "";
-    for (var i = 0; i < people.length; i++) {
-    optionHTML += `<option value="${people[i].name}">${people[i].name}</option>`;
-    }
-    optionHTML += `<option value ="Not Listed">My name is not listed</option>`
-    const targetElement = document.getElementById("choice-nam-select"); // Or whatever method you use
-    console.log('Target Element:', targetElement); // Check what this outputs
-
-    if (targetElement) {
-        targetElement.innerHTML = 'some value'; // This is likely line 41
-    } else {
-        console.error('Element not found. Check HTML ID or script placement.');
-    }
     document.getElementById("names").innerHTML = optionHTML;
 }
 
