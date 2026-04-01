@@ -89,3 +89,62 @@ ul li {
     background-color: #B08C00;
     color: #0B5710;
 }
+
+#logo {
+    font-size: 65px;
+    color: #fff;
+    text-shadow: 0 3px 20px red,
+                    0 0 20px red,
+                    0 0 10px orange,
+                    4px -5px 6px yellow,
+                    -4px -10px 10px yellow,
+                    0 -10px 30px yellow;
+    animation: fire 2s infinite alternate linear;
+}
+
+@keyframes fire {
+    0% {
+        text-shadow: 0 3px 20px red,
+                     0 0 20px red,
+                     0 0 10px orange,
+                     4px -5px 6px yellow,
+                     -4px -10px 10px yellow,
+                     0 -10px 30px yellow;
+      }
+
+    25% {
+          text-shadow: 0 3px 20px red,
+                       0 0 20px red,
+                       0 0 10px orange,
+                       -2px -5px 5px yellow,
+                       3px -10px 10px yellow,
+                       -4 -15px 20px yellow;
+      }
+
+    50% {
+          text-shadow: 0 3px 20px red,
+                       0 0 20px red,
+                       0 -5px 10px orange,
+                       3px -10px 10px yellow,
+                       -4px -15px 20px yellow,
+                       2px -20px 30px yellow;
+      }
+
+    75% {
+          text-shadow: 0 3px 20px red,
+                       0 0 20px red,
+                       0 -5px 10px orange,
+                       3px -10px 5px yellow,
+                       2px -20px 30px yellow,
+                       0 -25px 40px yellow;
+      }
+
+    100% {
+          text-shadow: 0 3px 20px red,
+                       0 0 10px red,
+                       0 0 0 orange,
+                       0 0 5px yellow,
+                       -2px -5px 5px yellow,
+                       4px -10px 10px yellow;
+      }
+}
