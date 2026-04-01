@@ -44,15 +44,15 @@ input[type=submit] {
 .button-link {
   display: inline-block;
   padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
+  background-color: #ffc800;
+  color: #3d3d3d;
   text-decoration: none;
-  border: 1px solid #0056b3;
+  border: 1px solid #ebb800;
   border-radius: 5px;
 }
 
 .button-link:hover {
-  background-color: #0056b3;
+  background-color: #ebb800;
 }
 
 ul {
@@ -78,7 +78,7 @@ ul li {
 }
 
 .nav-links li a:hover {
-    background-color: #cca000;
+    background-color: #ebb800;
 }
 
 #logo {
