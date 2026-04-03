@@ -175,6 +175,59 @@ async function do_query(id, column) {
         return [];
     }
 }
+
+// function that takes the name of the user and gets the unique document id for that user (different than id field)
+async function get_id_wname(name) {
+    try {
+        const webRef = db.collection("Local Web");
+        const snapshot = await webRef.get();
+        if (snapshot.empty) {
+            console.log('No matching documents.');
+            return [];
+        }
+        let id_for_name = null;
+        snapshot.forEach(doc => {
+            if (doc.data().Name === name) {
+                id_for_name = doc.id;
+            }
+        });
+        return id_for_name;
+    } catch (err) {
+        console.error("Query error: ", err);
+        return [];
+    }
+}
+
+// function that adds or removes relationship
+async function add_remove_relationship(name1, name2, relation, action) {
+    try {
+        let name1_id = await get_id_wname(name1);
+        let name2_id = await get_id_wname(name2);
+        const name1Ref = db.collection("Local Web").doc(name1_id);
+        const name2Ref = db.collection("Local Web").doc(name2_id);
+        if(action === "add") {
+            const union1Res = await name1Ref.update({
+                relation: FieldValue.arrayUnion(name2Ref.id)
+            });
+            const union2Res = await name2Ref.update({
+                relation: FieldValue.arrayUnion(name1Ref.id)
+            });
+        }
+        else {
+            const remove1Res = await name1Ref.update({
+                relation: FieldValue.arrayRemove(name2Ref.id)
+            });
+            const remove2Res = await name2Ref.update({
+                relation: FieldValue.arrayRemove(name1Ref.id)
+            });
+        }
+
+    } catch (err) {
+        console.error("Query error: ", err);
+        return [];
+    }
+}
+
 // A function that "handles login" by checking if the username and password  entered matches the ones in the dataset
 // If the username and password are in the database, the user will log in successfully
 // If not in the database, the user will be redirected to the create_account page
@@ -273,12 +326,7 @@ if (login_form) {
                     console.log('No matching documents.');
                     return [];
                 }
-                let id_for_name = null;
-                snapshot.forEach(doc => {
-                    if (doc.data().Name == name) {
-                        id_for_name = doc.id;
-                    }
-                });
+                let id_for_name = await get_id_wname(name);
                 const update_user = await webRef.doc(id_for_name).update({Username: user});
                 const update_pass = await webRef.doc(id_for_name).update({Password: pass});
                 return name;
