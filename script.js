@@ -35,6 +35,9 @@ const db = firebase.firestore();
 
 // A function that queries the database for people who have a specific relationship with a specific person
 // example: if the user selects "Jes B" and "Friend" do_query will return the friends of Jes B
+
+// A function that queries the database for people who have a specific relationship with a specific person
+// example: if the user selects "Jes B" and "Friend" do_query will return the friends of Jes B
 async function do_query(id, column) {
     try {
         const webRef = db.collection("Local Web");
@@ -197,7 +200,7 @@ async function get_id_wname(name) {
         return [];
     }
 }
-
+// TODO : create a function that adds and remove people from the website
 // function that adds or removes relationship
 async function add_remove_relationship(name1, name2, relation, action) {
     try {
@@ -228,7 +231,7 @@ async function add_remove_relationship(name1, name2, relation, action) {
     }
 }
 
-// A function that "handles login" by checking if the username and password  entered matches the ones in the dataset
+// A function that "handles login" by checking if the username and password entered matches the ones in the dataset
 // If the username and password are in the database, the user will log in successfully
 // If not in the database, the user will be redirected to the create_account page
 
