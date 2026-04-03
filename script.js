@@ -7,10 +7,7 @@ const firebaseConfig = {
     appId: "1:621332128804:web:94424f8ba5b97549fbe4b1",
     measurementId: "G-S0J91M5KEQ"
 };
-// test
-// Initialize Cloud Firestore
 
-//FIXED: NO MORE HARDCODING
 const accts =[]
 const people =[]
 //Function loadDropIndex takes the empty "people" array and reads the database's names and populates it bases on that
@@ -327,9 +324,17 @@ if (login_form) {
                     return [];
                 }
                 let id_for_name = await get_id_wname(name);
-                const update_user = await webRef.doc(id_for_name).update({Username: user});
-                const update_pass = await webRef.doc(id_for_name).update({Password: pass});
-                return name;
+                const docRef = await webRef.doc(id_for_name);
+                const docSnap = await docRef.get();
+                const existing_user = await docSnap.data().Username;
+                const existing_pass = await docSnap.data().Password;
+                if (existing_user === "" && existing_pass === "") {
+                    const update_user = await docRef.update({Username: user});
+                    const update_pass = await docRef.update({Password: pass});
+                    return name;
+                } else {
+                    return "Account already exists";
+                }
             } catch (err) {
                 console.error("Query error: ", err);
                 return [];
@@ -372,17 +377,24 @@ if (login_form) {
                 const dropdown_name = document.getElementById("names").value;
                 const infoDiv = document.getElementById("login-info");
                 infoDiv.innerHTML = "loading...";
-                console.log(dropdown_name)
-                if (dropdown_name == "My name is not listed") {
-                    const infos = await create_account_wo_name(user, pass, name);
+                let infos = null;
+                if (dropdown_name === "My name is not listed") {
+                    infos = await create_account_wo_name(user, pass, name);
                 } else {
-                    const infos = await create_account_w_name(user, pass, dropdown_name);
+                    infos = await create_account_w_name(user, pass, dropdown_name);
                 }
-                infoDiv.innerHTML = '<h1>Does this look correct?</h1>' +
-                    `<p>name: ${name}</p>` +
-                    `<p>username: ${user}</p>` +
-                    `<p>password: ${pass}</p>` +
-                    `<a href="index.html" class="button-link">Yes</a>`;
+                console.log(infos);
+                if (infos !== "Account already exists") {
+                    infoDiv.innerHTML = '<h1>Your Account Info:</h1>' +
+                        `<p>name: ${name}</p>` +
+                        `<p>username: ${user}</p>` +
+                        `<p>password: ${pass}</p>` +
+                        `<a href="index.html" class="button-link">Go To Da Web</a>`;
+                } else {
+                    infoDiv.innerHTML = '<p1 id="error">Account already exists. Try again or' +
+                    `<br>` +
+                    `<a href="login.html" class="button-link">Login</a>`;
+                }
             });
         }
 loadDropIndex(people)
