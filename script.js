@@ -324,64 +324,81 @@ async function new_person_id() {
 
 // A function that "creates an account" for the user when the user's name is not already in the database
 // This function creates a new document in the firestore with the username, password, and name provided by the user and empty relationship arrays
-        async function create_account_wo_name(user, pass, name) {
-            try {
-                const ids = await new_person_id();
-                console.log(ids);
-                const new_user_id = ids[0];
-                console.log(new_user_id);
-                const new_id = ids[1];
-                const new_acct_info = {
-                    Coworker: [],
-                    Dating: [],
-                    Friend: [],
-                    ["Have Met"]: [],
-                    Name: name,
-                    Password: pass,
-                    Roommate: [],
-                    ["Secret 3rd"]: [],
-                    Supervisor: [],
-                    Teammate: [],
-                    ["Unique ID"]: new_id,
-                    Username: user
-                };
-                const res = await db.collection('Local Web').doc(new_user_id).set(new_acct_info)
+async function create_account_wo_name(user, pass, name) {
+    try {
+        const ids = await new_person_id();
+        console.log(ids);
+        const new_user_id = ids[0];
+        console.log(new_user_id);
+        const new_id = ids[1];
+        const new_acct_info = {
+            Coworker: [],
+            Dating: [],
+            Friend: [],
+            ["Have Met"]: [],
+            Name: name,
+            Password: pass,
+            Roommate: [],
+            ["Secret 3rd"]: [],
+            Supervisor: [],
+            Teammate: [],
+            ["Unique ID"]: new_id,
+            Username: user
+        };
+        const res = await db.collection('Local Web').doc(new_user_id).set(new_acct_info)
 
-                return new_acct_info;
-            } catch (err) {
-                console.error("Query error: ", err);
-                return [];
-            }
-        }
+        return new_acct_info;
+    } catch (err) {
+        console.error("Query error: ", err);
+        return [];
+    }
+}
 
 // A function that "creates an account" for the user when the user's name does not exist in the database
 // this edits the Password and Username field for an existing document
-        async function create_account_w_name(user, pass, name) {
-            try {
-                const webRef = db.collection("Local Web");
-                const snapshot = await webRef.get();
-                if (snapshot.empty) {
-                    console.log('No matching documents.');
-                    return [];
-                }
-                let id_for_name = await get_id_wname(name);
-                const docRef = await webRef.doc(id_for_name);
-                const docSnap = await docRef.get();
-                const existing_user = await docSnap.data().Username;
-                const existing_pass = await docSnap.data().Password;
-                if (existing_user === "" && existing_pass === "") {
-                    const update_user = await docRef.update({Username: user});
-                    const update_pass = await docRef.update({Password: pass});
-                    return name;
-                } else {
-                    return "Account already exists";
-                }
-            } catch (err) {
-                console.error("Query error: ", err);
-                return [];
+async function create_account_w_name(user, pass, name) {
+    try {
+        const webRef = db.collection("Local Web");
+        const snapshot = await webRef.get();
+        if (snapshot.empty) {
+            console.log('No matching documents.');
+            return [];
+        }
+        let id_for_name = await get_id_wname(name);
+        const docRef = await webRef.doc(id_for_name);
+        const docSnap = await docRef.get();
+        const existing_user = await docSnap.data().Username;
+        const existing_pass = await docSnap.data().Password;
+        if (existing_user === "" && existing_pass === "") {
+            const update_user = await docRef.update({Username: user});
+            const update_pass = await docRef.update({Password: pass});
+            return name;
+        } else {
+            return "Account already exists";
+        }
+    } catch (err) {
+        console.error("Query error: ", err);
+        return [];
+    }
+}
+
+function myFunction() {
+    document.getElementById("create-login").classList.toggle("show");
+}
+
+// Close the dropdown if the user clicks outside of it
+window.onclick = function(event) {
+    if (!event.target.matches('.drop-btn')) {
+        var dropdowns = document.getElementsByClassName("dropdown-content");
+        var i;
+        for (i = 0; i < dropdowns.length; i++) {
+            var openDropdown = dropdowns[i];
+            if (openDropdown.classList.contains('show')) {
+                openDropdown.classList.remove('show');
             }
         }
-
+    }
+}
 // Display do_query results on index.html
         const submit_btn = document.getElementById("submit-btn")
         if (submit_btn) {

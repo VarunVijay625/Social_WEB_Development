@@ -81,6 +81,52 @@ ul li {
     background-color: #ebb800;
 }
 
+.drop-btn {
+    background-color: #ffc800;
+    color: #3d3d3d;
+    font-family: arial;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    z-index: 1000;
+}
+
+.drop-btn:hover, .drop-btn:focus {
+    background-color: #ebb800;
+}
+
+.login-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    font-family: arial;
+    position: fixed;
+    top: 60px;
+    right: 10px;
+    background-color: #FFC800;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a{
+    color: #3d3d3d;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {background-color: #ebb800;}
+
+.show {display: block;}
+
 #logo {
     font-family: tahoma, verdana, segoe, sans-serif;
     letter-spacing: 2px;
