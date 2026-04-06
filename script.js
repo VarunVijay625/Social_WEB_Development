@@ -290,29 +290,47 @@ if (login_form) {
     });
 }
 
+// function that gets the ids of a new person to be added to the database
+// index 0 is the document id and index 1 is the unique id used as one of the fields
+async function new_person_id() {
+    try {
+        const ids = [];
+        const webRef = db.collection("Local Web");
+        const snapshot = await webRef.get();
+        if (snapshot.empty) {
+            console.log('No matching documents.');
+            return [];
+        }
+        const user_ids = [];
+        const unique_ids = [];
+        snapshot.forEach(doc => {
+            user_ids.push(Number(doc.id));
+            unique_ids.push(Number(doc.data()["Unique ID"]));
+            console.log(doc.id, '=>', doc.data()["Unique ID"]);
+        });
+        const max_user_id = Math.max(...user_ids);
+        console.log(max_user_id)
+        const max_unique_id = Math.max(...unique_ids);
+        console.log(max_unique_id)
+        const new_id = max_unique_id + 1;
+        const new_user_id = "00" + String(max_user_id + 1);
+        ids.push(new_user_id, new_id);
+        return ids;
+    } catch (err) {
+        console.error("Query error: ", err);
+        return [];
+    }
+}
+
 // A function that "creates an account" for the user when the user's name is not already in the database
 // This function creates a new document in the firestore with the username, password, and name provided by the user and empty relationship arrays
         async function create_account_wo_name(user, pass, name) {
             try {
-                const webRef = db.collection("Local Web");
-                const snapshot = await webRef.get();
-                if (snapshot.empty) {
-                    console.log('No matching documents.');
-                    return [];
-                }
-                const user_ids = [];
-                const unique_ids = [];
-                snapshot.forEach(doc => {
-                    user_ids.push(Number(doc.id));
-                    unique_ids.push(Number(doc.data()["Unique ID"]));
-                    console.log(doc.id, '=>', doc.data()["Unique ID"]);
-                });
-                const max_user_id = Math.max(...user_ids);
-                console.log(max_user_id)
-                const max_unique_id = Math.max(...unique_ids);
-                console.log(max_unique_id)
-                const new_id = max_unique_id + 1;
-                const new_user_id = "00" + String(max_user_id + 1);
+                const ids = await new_person_id();
+                console.log(ids);
+                const new_user_id = ids[0];
+                console.log(new_user_id);
+                const new_id = ids[1];
                 const new_acct_info = {
                     Coworker: [],
                     Dating: [],
