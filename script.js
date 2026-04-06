@@ -197,7 +197,27 @@ async function get_id_wname(name) {
         return [];
     }
 }
-// TODO : create a function that adds and remove people from the website
+// create a function that adds and remove people from the website
+async function add_remove_person (name, action) {
+
+    try {
+        const peopleRef = db.collection("Local Web").doc('Name');
+
+        if( action === "add") {
+            await peopleRef.update({
+                add_remove: FieldValue.arrayUnion(name)
+            });
+        }
+        else {
+            await peopleRef.update({
+                add_remove: FieldValue.arrayRemove(name)
+            });
+        }
+    } catch (err) {
+        console.error("Query error: ", err);
+        return [];
+    }
+}
 // function that adds or removes relationship
 async function add_remove_relationship(name1, name2, relation, action) {
     try {
