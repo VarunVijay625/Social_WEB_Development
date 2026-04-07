@@ -5,9 +5,27 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <script>
-    function changeType() {
-        document.getElementById("person-1").replaceWith(<input type="text" id="person-1-test"/>)
+    function validateInput() {
+        var action = document.getElementById("add-or-remove");
+        var selectedValue = action.options[action.selectedIndex].value;
+        if (selectedValue == "add") {
+            changeTypeToText();
+        }
+        else if (selectedValue == "remove") {
+            changeTypeToSelect();
+        }
     }
+    function changeTypeToText() {
+        document.getElementById("person-1").outerHTML = '<input type="text" id="person-1"/>'
+
+        document.getElementById("person-2").outerHTML = '<input type="text" id="person-2"/>'
+    }
+    function changeTypeToSelect() {
+        document.getElementById("person-1").outerHTML = '<select id="person-1">'+'</select>'
+
+        document.getElementById("person-2").outerHTML = '<select id="person-2">'+'</select>'
+    }
+    setInterval(validateInput, 1);
 </script>
 
 <body>
@@ -28,9 +46,11 @@
       <option>add</option>
       <option>remove</option>
     </select>
+
     <select id="person-1">
 
     </select>
+
     <select id="relationship">
 
     </select>
@@ -38,10 +58,6 @@
 
     </select>
     </p>
-
-    <p><input type="checkbox" id="detail-check"> detail</p>
-
-    <input type="button" onclick="changeType()" value="test">
 
     <script>
         // Fetch the navigation component
