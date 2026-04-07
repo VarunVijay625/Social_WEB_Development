@@ -197,7 +197,7 @@ async function get_id_wname(name) {
         return [];
     }
 }
-// This function checks if the name of the person already exist in the web
+// This funcion checks if the name of the person already exist in the web
 async function name_exists(name) {
     try {
         const webRef = db.collection("Local Web");
@@ -274,8 +274,6 @@ async function remove_person(name){
         const person_id = highest_id[0];
         console.log(person_id);
         const action = await db.collection('Local Web').doc(person_id).delete();
-
-        return action;
 
     } catch (err) {
         console.error("Query error: ", err);
