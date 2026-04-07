@@ -24,7 +24,10 @@ async function loadDropIndex(){
     optionHTML += `<option value="${people[i].name}">${people[i].name}</option>`;
     }
     optionHTML += `<option value="My name is not listed">My name is not listed</option>`;
-    document.getElementById("names").innerHTML = optionHTML;
+    const name_dropdown = document.getElementById("names");
+    if (name_dropdown) {
+        name_dropdown.innerHTML = optionHTML;
+    }
 }
 
 const app = firebase.initializeApp(firebaseConfig);
