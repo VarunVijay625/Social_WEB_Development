@@ -197,7 +197,7 @@ async function get_id_wname(name) {
         return [];
     }
 }
-// This funcion checks if the name of the person already exist in the web
+// This function checks if the name of the person already exist in the web
 async function name_exists(name) {
     try {
         const webRef = db.collection("Local Web");
@@ -246,13 +246,13 @@ async function add_person(name){
             Friend: [],
             ["Have Met"]: [],
             Name: name,
-            Password: [],
+            Password: "",
             Roommate: [],
             ["Secret 3rd"]: [],
             Supervisor: [],
             Teammate: [],
             ["Unique ID"]: new_id,
-            Username: []
+            Username: ""
         };
         const action = await db.collection('Local Web').doc(new_person_id).set(person_added)
 
@@ -273,24 +273,9 @@ async function remove_person(name){
         console.log(highest_id);
         const person_id = highest_id[0];
         console.log(person_id);
-        const new_id = highest_id[1];
-        const person_removed = {
-            Coworker: [],
-            Dating: [],
-            Friend: [],
-            ["Have Met"]: [],
-            Name: name,
-            Password: [],
-            Roommate: [],
-            ["Secret 3rd"]: [],
-            Supervisor: [],
-            Teammate: [],
-            ["Unique ID"]: new_id,
-            Username: []
-        };
-        const action = await db.collection('Local Web').doc(person_removed).delete();
+        const action = await db.collection('Local Web').doc(person_id).delete();
 
-        return person_removed;
+        return action;
 
     } catch (err) {
         console.error("Query error: ", err);
