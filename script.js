@@ -197,26 +197,73 @@ async function get_id_wname(name) {
         return [];
     }
 }
-// create a function that adds and remove people from the website
-async function add_remove_person (name, action) {
-
+// function that adds people to the database
+async function add_person(name){
+    //find the highest id number and call it id or something
+    //create a doc using the const await db syntx that assigns name and id and nothing
+    //this is the liat of ids plus the new one you need, get the highest number in this list and call it id or something
     try {
-        const peopleRef = db.collection("Local Web").doc('Name');
+        const highest_id = await new_person_id();
+        console.log(highest_id);
+        const new_person_id = highest_id[0];
+        console.log(new_person_id);
+        const new_id = highest_id[1];
+        const person_added = {
+            Coworker: [],
+            Dating: [],
+            Friend: [],
+            ["Have Met"]: [],
+            Name: name,
+            Password: [],
+            Roommate: [],
+            ["Secret 3rd"]: [],
+            Supervisor: [],
+            Teammate: [],
+            ["Unique ID"]: new_id,
+            Username: []
+        };
+        const action = await db.collection('Local Web').doc(new_person_id).set(person_added)
 
-        if( action === "add") {
-            await peopleRef.update({
-                add_remove: FieldValue.arrayUnion(name)
-            });
-        }
-        else {
-            await peopleRef.update({
-                add_remove: FieldValue.arrayRemove(name)
-            });
-        }
+        return person_added;
+
     } catch (err) {
         console.error("Query error: ", err);
         return [];
     }
+    //find syntax to push a new person to the db given id and name (see create account w name)
+}
+// function that removes people from the database
+async function remove_person(name){
+    try {
+        const highest_id = await new_person_id();
+        console.log(highest_id);
+        const person_id = highest_id[0];
+        console.log(person_id);
+        const new_id = highest_id[1];
+        const person_removed = {
+            Coworker: [],
+            Dating: [],
+            Friend: [],
+            ["Have Met"]: [],
+            Name: name,
+            Password: [],
+            Roommate: [],
+            ["Secret 3rd"]: [],
+            Supervisor: [],
+            Teammate: [],
+            ["Unique ID"]: new_id,
+            Username: []
+        };
+        const action = await db.collection('Local Web').doc(person_removed).delete();
+
+        return person_removed;
+
+    } catch (err) {
+        console.error("Query error: ", err);
+        return [];
+    }
+
+
 }
 // function that adds or removes relationship
 async function add_remove_relationship(name1, name2, relation, action) {
