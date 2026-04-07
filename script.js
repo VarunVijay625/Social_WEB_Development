@@ -467,29 +467,52 @@ window.onclick = function(event) {
     }
 }
 // Display do_query results on index.html
-        const submit_btn = document.getElementById("submit-btn")
-        if (submit_btn) {
-            submit_btn.addEventListener("click", async () => {
-                const name = document.getElementById("names").value
-                let id = null;
-                let index = 0;
-                for (const p of people) {
-                    if (p.name === name) {
-                        id = people[index].id;
-                    }
-                    index += 1;
-                }
-                const relation = document.getElementById("relation-select").value;
-                const resultsDiv = document.getElementById("results");
-                resultsDiv.innerHTML = "loading...";
-                console.log(people);
-                const names = await do_query(id, relation);
-                console.log(names);
-                resultsDiv.innerHTML = names.length
-                    ? names.map(name => `<p>${name}</p>`).join("")
-                    : "<p>No results.</p>";
-            });
+const submit_btn = document.getElementById("submit-btn")
+if (submit_btn) {
+    submit_btn.addEventListener("click", async () => {
+        const name = document.getElementById("names").value
+        let id = null;
+        let index = 0;
+        for (const p of people) {
+            if (p.name === name) {
+                id = people[index].id;
+            }
+            index += 1;
         }
+        const relation = document.getElementById("relation-select").value;
+        const resultsDiv = document.getElementById("results");
+        resultsDiv.innerHTML = "loading...";
+        console.log(people);
+        const names = await do_query(id, relation);
+        console.log(names);
+        resultsDiv.innerHTML = names.length
+            ? names.map(name => `<p>${name}</p>`).join("")
+            : "<p>No results.</p>";
+    });
+}
+
+
+
+const submit_btn_remove = document.getElementById("submit-btn-person")
+if (submit_btn_remove) {
+    submit_btn_remove.addEventListener("click", async () => {
+        const name = document.getElementById("names").value
+        console.log(name)
+        await remove_person(name);
+    });
+}
+
+async function ChangeEnabled(){
+    const selectedValue = document.querySelector('input[name="choice"]:checked').value;
+    if(selectedValue == "remove"){
+        document.getElementById("myInput").disabled = true;
+        document.getElementById("names").disabled = false;
+    }
+    else{
+       document.getElementById("myInput").disabled = false;
+       document.getElementById("names").disabled = true; 
+    }
+}
 
 // Create an account using either of the create account functions
         const create_account_form = document.getElementById("account-info")
