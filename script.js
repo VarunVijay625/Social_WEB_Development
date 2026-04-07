@@ -197,12 +197,44 @@ async function get_id_wname(name) {
         return [];
     }
 }
+// This funcion checks if the name of the person already exist in the web
+async function name_exists(name) {
+    try {
+        const webRef = db.collection("Local Web");
+        const snapshot = await webRef.get();
+        if (snapshot.empty) {
+            console.log('No matching documents.');
+            return [];
+        }
+        let name_found = false;
+        snapshot.forEach(doc => {
+            const data = doc.data();
+            if (data.Name === name) {
+                name_found = true;
+            }
+            if (name_found) {
+                console.log("Already in the web");
+            } else {
+                return name;
+            }
+
+        });
+    }
+    catch (err){
+        console.error("Query error", err);
+    }
+}
+
 // function that adds people to the database
 async function add_person(name){
     //find the highest id number and call it id or something
     //create a doc using the const await db syntx that assigns name and id and nothing
     //this is the liat of ids plus the new one you need, get the highest number in this list and call it id or something
     try {
+        const name_found = await name_exists(name)
+        if (name_found){
+            console.log("This name is already in the web")
+        }
         const highest_id = await new_person_id();
         console.log(highest_id);
         const new_person_id = highest_id[0];
@@ -223,6 +255,8 @@ async function add_person(name){
             Username: []
         };
         const action = await db.collection('Local Web').doc(new_person_id).set(person_added)
+
+        console.log( name, "was added successfully");
 
         return person_added;
 
@@ -310,7 +344,7 @@ async function login_page(user, pass) {
         let user_found = false;
         snapshot.forEach(doc => {
             const data = doc.data();
-            if (data.Username == user && data.Password == pass) {
+            if (data.Username === user && data.Password === pass) {
                 user_found = true;
             }
             if (user_found) {
