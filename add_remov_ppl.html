@@ -18,15 +18,17 @@
 
   <h1>Add or Remove a Person</h1>
   <input type="radio" id="add" name="choice" value="add" onclick="changeTypeToAdd()" checked>
-  <label for="option1">Add a Person</label><br>
+  <label for="add">Add a Person</label><br>
   <input type="radio" id="remove" name="choice" value="remove" onclick="changeTypeToRemove()" >
-  <label for="option2">Remove a Person</label>
+  <label for="remove">Remove a Person</label>
+
 </form>
   <p id="input">Type person's first name and last initial:
     <input type="text" id="myInput" placeholder="Type the name...">
   </p>
 
-  <p><button id="submit-btn-remove" onclick="add_person(myInput)">Submit</button></p>
+  <p><button id="submit-btn-remove" onclick="remove_person(myInput)">Submit</button></p>
+  <p><button id="submit-btn-add-person" onclick="add_person(myInput)">Submit</button></p>
 
 
   <div id="results"></div>
