@@ -7,10 +7,10 @@
 </head>
 <script>
   function changeTypeToAdd() {
-    document.getElementById("input").innerHTML = "Type person's first name and last initial: "+'<input type="text" id="myInput" placeholder="Type the name...">' + '<p><button id="submit-btn-add-person">Add Person</button></p>'
+    document.getElementById("input").innerHTML = "Type person's first name and last initial: "+`<input type="text" id="myInput" placeholder="Type the name...">`
   }
   function changeTypeToRemove() {
-    document.getElementById("input").innerHTML = "Select the person's name: "+'<select id="names_4">'+'placeholder'+'</select>' + '<p><button id="submit-btn-remove">Remove Person</button></p>'
+    document.getElementById("input").innerHTML = "Select the person's name: "+`<select id="names_4">`+"placeholder"+"</select>";
   }
 </script>
 <body>
@@ -22,10 +22,10 @@
   <input type="radio" id="remove" name="choice" value="remove" onclick="changeTypeToRemove()" >
   <label for="remove">Remove a Person</label>
 
-</form>
   <p id="input">Type person's first name and last initial:
     <input type="text" id="myInput" placeholder="Type the name...">
   </p>
+  <p><button id="submit-btn-people">Submit</button></p>
 
 
 

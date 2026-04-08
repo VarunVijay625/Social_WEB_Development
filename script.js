@@ -522,22 +522,23 @@ if (relation_submit) {
         doneDiv.innerHTML = "Done! Add or remove more relationships if you want";
     });
 }
-const submit_btn_add = document.getElementById("submit-btn-add-person")
-if (submit_btn_add) {
-    submit_btn_add.addEventListener("click", async () => {
-        const name = document.getElementById("myInput").value
-        console.log(name)
-        await add_person(name);
-    });
-}
-
-
-const submit_btn_remove = document.getElementById("submit-btn-person")
-if (submit_btn_remove) {
-    submit_btn_remove.addEventListener("click", async () => {
-        const name = document.getElementById("names").value
-        console.log(name)
-        await remove_person(name);
+const submit_btn_add_remove = document.getElementById("submit-btn-people");
+const add = document.getElementById("add");
+const remove = document.getElementById("remove");
+console.log(add);
+console.log(remove);
+if (submit_btn_add_remove) {
+    submit_btn_add_remove.addEventListener("click", async () => {
+        if (add.checked) {
+            const name = document.getElementById("myInput").value
+            console.log(name)
+            await add_person(name);
+        }
+        if (remove.checked) {
+            const name = document.getElementById("names").value
+            console.log(name)
+            await remove_person(name);
+        }
     });
 }
 
