@@ -50,7 +50,8 @@
       <option>remove</option>
     </select>
 
-    <select id="person-1">
+    <select id="names">
+        placeholder
     </select>
 
     <select id="relationship">
@@ -64,11 +65,17 @@
         <option>is teammates with</option>
     </select>
     
-    <select id="person-2">
+    <select id="names_2">
+        placeholder
     </select>
     </p>
 
     <p><button id="submit-btn">submit</button></p>
+
+    <div id="results"></div>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+    <script src="script.js"></script>
 
     <script>
         // Fetch the navigation component

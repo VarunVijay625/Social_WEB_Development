@@ -28,6 +28,11 @@ async function loadDropIndex(){
     if (name_dropdown) {
         name_dropdown.innerHTML = optionHTML;
     }
+    // option for second dropdown of names
+    const name_dropdown_2 = document.getElementById("names_2");
+    if (name_dropdown_2) {
+        name_dropdown_2.innerHTML = optionHTML;
+    }
 }
 
 const app = firebase.initializeApp(firebaseConfig);
