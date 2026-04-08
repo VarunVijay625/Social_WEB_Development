@@ -33,6 +33,12 @@ async function loadDropIndex(){
     if (name_dropdown_2) {
         name_dropdown_2.innerHTML = optionHTML;
     }
+    // option for the dropdown in removing people in add_remov_ppl.html since it is a string
+    const {placeholder_value} = require("./add_remov_ppl.html");
+    if (placeholder_value) {
+        let val = placeholder_value.val;
+        val.replace("placeholder", "test");
+    }
 }
 
 const app = firebase.initializeApp(firebaseConfig);

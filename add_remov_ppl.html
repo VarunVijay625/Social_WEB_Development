@@ -9,8 +9,12 @@
   function changeTypeToAdd() {
     document.getElementById("input").innerHTML = "Type person's first name and last initial: "+'<input type="text" id="myInput" placeholder="Type the name...">'
   }
+  module.exports = {placeholder_value};
   function changeTypeToRemove() {
-    document.getElementById("input").innerHTML = "Select the person's name: "+'<select id="names">'+'placeholder'+'</select>'
+    // placeholder_value = "Select the person's name: "+'<select id=names>'+'placeholder'+'</select>';
+    //let val = placeholder_value.val;
+    val = returnOptions();
+    document.getElementById("input").innerHTML = "Select the person's name: "+'<select id=names>'+val+'</select>';
   }
 </script>
 <body>
