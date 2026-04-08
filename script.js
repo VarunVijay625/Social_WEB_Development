@@ -28,6 +28,20 @@ async function loadDropIndex(){
     if (name_dropdown) {
         name_dropdown.innerHTML = optionHTML;
     }
+    // option for second dropdown of names
+    const name_dropdown_2 = document.getElementById("names_2");
+    if (name_dropdown_2) {
+        name_dropdown_2.innerHTML = optionHTML;
+    }
+    // option for third dropdown of names
+    const name_dropdown_3 = document.getElementById("names_3");
+    if (name_dropdown_3) {
+        name_dropdown_3.innerHTML = optionHTML;
+    }
+    const name_dropdown_4 = document.getElementById("names_4");
+    if (name_dropdown_4) {
+        name_dropdown_4.innerHTML = optionHTML;
+    }
 }
 
 const app = firebase.initializeApp(firebaseConfig);
@@ -227,48 +241,11 @@ async function name_exists(name) {
         console.error("Query error", err);
     }
 }
-
+//find the highest id number and call it id or something
+//create a doc using the const await db syntx that assigns name and id and nothing
+//this is the liat of ids plus the new one you need, get the highest number in this list and call it id or something
 // function that adds people to the database
-async function add_person(name){
-    //find the highest id number and call it id or something
-    //create a doc using the const await db syntx that assigns name and id and nothing
-    //this is the liat of ids plus the new one you need, get the highest number in this list and call it id or something
-    try {
-        const name_found = await name_exists(name)
-        if (name_found){
-            console.log("This name is already in the web")
-        }
-        const highest_id = await new_person_id();
-        console.log(highest_id);
-        const new_person_id = highest_id[0];
-        console.log(new_person_id);
-        const new_id = highest_id[1];
-        const person_added = {
-            Coworker: [],
-            Dating: [],
-            Friend: [],
-            ["Have Met"]: [],
-            Name: name,
-            Password: "",
-            Roommate: [],
-            ["Secret 3rd"]: [],
-            Supervisor: [],
-            Teammate: [],
-            ["Unique ID"]: new_id,
-            Username: ""
-        };
-        const action = await db.collection('Local Web').doc(new_person_id).set(person_added)
 
-        console.log( name, "was added successfully");
-
-        return person_added;
-
-    } catch (err) {
-        console.error("Query error: ", err);
-        return [];
-    }
-    //find syntax to push a new person to the db given id and name (see create account w name)
-}
 // function that removes people from the database
 async function remove_person(name){
     try {
@@ -292,22 +269,29 @@ async function add_remove_relationship(name1, name2, relation, action) {
         let name2_id = await get_id_wname(name2);
         const name1Ref = db.collection("Local Web").doc(name1_id);
         const name2Ref = db.collection("Local Web").doc(name2_id);
+        const name1Snap = await name1Ref.get();
+        const name2Snap = await name2Ref.get();
+        const name1Unique = name1Snap.data()["Unique ID"];
+        const name2Unique = name2Snap.data()["Unique ID"];
+        console.log(name1_id);
         if(action === "add") {
+            console.log("added?")
             const union1Res = await name1Ref.update({
-                relation: FieldValue.arrayUnion(name2Ref.id)
+                [relation]: firebase.firestore.FieldValue.arrayUnion(name2Unique)
             });
             const union2Res = await name2Ref.update({
-                relation: FieldValue.arrayUnion(name1Ref.id)
+                [relation]: firebase.firestore.FieldValue.arrayUnion(name1Unique)
             });
         }
         else {
             const remove1Res = await name1Ref.update({
-                relation: FieldValue.arrayRemove(name2Ref.id)
+                [relation]: firebase.firestore.FieldValue.arrayRemove(name2Unique)
             });
             const remove2Res = await name2Ref.update({
-                relation: FieldValue.arrayRemove(name1Ref.id)
+                [relation]: firebase.firestore.FieldValue.arrayRemove(name1Unique)
             });
         }
+        return name1;
 
     } catch (err) {
         console.error("Query error: ", err);
@@ -420,7 +404,41 @@ async function create_account_wo_name(user, pass, name) {
         return [];
     }
 }
+async function add_person(name){
+    try {
+        const name_found = await name_exists(name)
+        if (name_found){
+            console.log("This name is already in the web")
+        }
+        const highest_id = await new_person_id();
+        console.log(highest_id);
+        const new_user_id = highest_id[0];
+        console.log(new_person_id);
+        const new_id = highest_id[1];
+        const person_added = {
+            Coworker: [],
+            Dating: [],
+            Friend: [],
+            ["Have Met"]: [],
+            Name: name || null,
+            Password: "",
+            Roommate: [],
+            ["Secret 3rd"]: [],
+            Supervisor: [],
+            Teammate: [],
+            ["Unique ID"]: new_id,
+            Username: ""
+        };
+        const action = await db.collection('Local Web').doc(new_user_id).set(person_added)
 
+        console.log( name, "was added successfully");
+
+        return person_added;
+    } catch (err) {
+        console.error("Query error: ", err);
+        return [];
+    }
+}
 // A function that "creates an account" for the user when the user's name does not exist in the database
 // this edits the Password and Username field for an existing document
 async function create_account_w_name(user, pass, name) {
@@ -491,14 +509,36 @@ if (submit_btn) {
     });
 }
 
-
-
-const submit_btn_remove = document.getElementById("submit-btn-person")
-if (submit_btn_remove) {
-    submit_btn_remove.addEventListener("click", async () => {
-        const name = document.getElementById("names").value
-        console.log(name)
-        await remove_person(name);
+// add/remove relationships
+const relation_submit = document.getElementById("relation-submit-btn");
+if (relation_submit) {
+    relation_submit.addEventListener("click", async () => {
+        const name1 = document.getElementById("names_2").value;
+        const name2 = document.getElementById("names_3").value;
+        const relation = document.getElementById("relationship").value;
+        const action = document.getElementById("add-or-remove").value;
+        await add_remove_relationship(name1, name2, relation, action);
+        const doneDiv = document.getElementById("done-remove");
+        doneDiv.innerHTML = "Done! Add or remove more relationships if you want";
+    });
+}
+const submit_btn_add_remove = document.getElementById("submit-btn-people");
+const add = document.getElementById("add");
+const remove = document.getElementById("remove");
+console.log(add);
+console.log(remove);
+if (submit_btn_add_remove) {
+    submit_btn_add_remove.addEventListener("click", async () => {
+        if (add.checked) {
+            const name = document.getElementById("myInput").value
+            console.log(name)
+            await add_person(name);
+        }
+        if (remove.checked) {
+            const name = document.getElementById("names").value
+            console.log(name)
+            await remove_person(name);
+        }
     });
 }
 

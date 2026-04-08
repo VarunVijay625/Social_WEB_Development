@@ -9,35 +9,35 @@
         var action = document.getElementById("add-or-remove");
         var selectedValue = action.options[action.selectedIndex].value;
         if (selectedValue == "add") {
-            changeTypeToText();
+            changeTypeToAdd();
         }
         else if (selectedValue == "remove") {
-            changeTypeToSelect();
+            changeTypeToRemove();
         }
     }
-    function changeTypeToText() {
+    function changeTypeToAdd() {
+        /*
         document.getElementById("person-1").outerHTML = '<input type="text" id="person-1"/>'
 
         document.getElementById("person-2").outerHTML = '<input type="text" id="person-2"/>'
+        */
 
         document.getElementById("relationship").outerHTML = '<select id="relationship">'+'<option>is coworkers with</option>'+'<option>is dating</option>'+'<option>is friends with</option>'+'<option>has met</option>'+'<option>is roommates with</option>'+'<option>is a secret 3rd option with</option>'+'<option>is a supervisor of</option>'+'<option>is teammates with</option>'+'</select>'
     }
-    function changeTypeToSelect() {
+    function changeTypeToRemove() {
+        /*
         document.getElementById("person-1").outerHTML = '<select id="person-1">'+'</select>'
 
         document.getElementById("person-2").outerHTML = '<select id="person-2">'+'</select>'
+        */
 
-        document.getElementById("relationship").outerHTML = '<select id="relationship">'+'<option>is no longer coworkers with</option>'+'<option>is no longer dating</option>'+'<option>is no longer friends with</option>'+'<option>has not met</option>'+'<option>is no longer roommates with</option>'+'<option>is no longer a secret 3rd option with</option>'+'<option>is no longer a supervisor of</option>'+'<option>is no longer teammates with</option>'+'</select>'
+        document.getElementById("relationship").outerHTML = '<select id="relationship">'+'<option value="Coworker">is no longer coworkers with</option>'+'<option value="Dating">is no longer dating</option>'+'<option value="Friend">is no longer friends with</option>'+'<option value="Have Met">has not met</option>'+'<option value="Roommate">is no longer roommates with</option>'+'<option value="Secret 3rd">is no longer a secret 3rd option with</option>'+'<option value="Supervisor">is no longer a supervisor of</option>'+'<option value="Teammate">is no longer teammates with</option>'+'</select>'
     }
     // setInterval(validateInput, 1);
 </script>
 
 <body>
     <div id="navbar-placeholder"></div>
-
-    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-    <script src="script.js"></script>
 
     <p>
     </select>
@@ -46,23 +46,29 @@
       <option>remove</option>
     </select>
 
-    <input type="text" id="person-1">
+    <select id="names_2">
+        placeholder
+    </select>
 
     <select id="relationship">
-        <option>is coworkers with</option>
-        <option>is dating</option>
-        <option>is friends with</option>
-        <option>has met</option>
-        <option>is roommates with</option>
-        <option>is a secret 3rd option with</option>
-        <option>is a supervisor of</option>
-        <option>is teammates with</option>
+        <option value="Coworker">is coworkers with</option>
+        <option value="Dating">is dating</option>
+        <option value="Friend">is friends with</option>
+        <option value="Have Met">has met</option>
+        <option value="Roommate">is roommates with</option>
+        <option value="Secret 3rd">is a secret 3rd option with</option>
+        <option value="Supervisor">is a supervisor of</option>
+        <option value="Teammate">is teammates with</option>
     </select>
     
-    <input type="text" id="person-2">
+    <select id="names_3">
+        placeholder
+    </select>
     </p>
 
-    <p><button id="submit-btn">submit</button></p>
+    <p><button id="relation-submit-btn">submit</button></p>
+
+    <div id="done-remove"></div>
 
     <script>
         // Fetch the navigation component
@@ -83,5 +89,9 @@
             console.error('Error loading navigation:', error);
             });
     </script>
+
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
