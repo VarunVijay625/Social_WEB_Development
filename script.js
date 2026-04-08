@@ -33,6 +33,11 @@ async function loadDropIndex(){
     if (name_dropdown_2) {
         name_dropdown_2.innerHTML = optionHTML;
     }
+    // option for third dropdown of names
+    const name_dropdown_3 = document.getElementById("names_3");
+    if (name_dropdown_3) {
+        name_dropdown_3.innerHTML = optionHTML;
+    }
 }
 
 const app = firebase.initializeApp(firebaseConfig);
@@ -297,22 +302,29 @@ async function add_remove_relationship(name1, name2, relation, action) {
         let name2_id = await get_id_wname(name2);
         const name1Ref = db.collection("Local Web").doc(name1_id);
         const name2Ref = db.collection("Local Web").doc(name2_id);
+        const name1Snap = await name1Ref.get();
+        const name2Snap = await name2Ref.get();
+        const name1Unique = name1Snap.data()["Unique ID"];
+        const name2Unique = name2Snap.data()["Unique ID"];
+        console.log(name1_id);
         if(action === "add") {
+            console.log("added?")
             const union1Res = await name1Ref.update({
-                relation: FieldValue.arrayUnion(name2Ref.id)
+                [relation]: firebase.firestore.FieldValue.arrayUnion(name2Unique)
             });
             const union2Res = await name2Ref.update({
-                relation: FieldValue.arrayUnion(name1Ref.id)
+                [relation]: firebase.firestore.FieldValue.arrayUnion(name1Unique)
             });
         }
         else {
             const remove1Res = await name1Ref.update({
-                relation: FieldValue.arrayRemove(name2Ref.id)
+                [relation]: firebase.firestore.FieldValue.arrayRemove(name2Unique)
             });
             const remove2Res = await name2Ref.update({
-                relation: FieldValue.arrayRemove(name1Ref.id)
+                [relation]: firebase.firestore.FieldValue.arrayRemove(name1Unique)
             });
         }
+        return name1;
 
     } catch (err) {
         console.error("Query error: ", err);
@@ -496,7 +508,19 @@ if (submit_btn) {
     });
 }
 
-
+// add/remove relationships
+const relation_submit = document.getElementById("relation-submit-btn");
+if (relation_submit) {
+    relation_submit.addEventListener("click", async () => {
+        const name1 = document.getElementById("names_2").value;
+        const name2 = document.getElementById("names_3").value;
+        const relation = document.getElementById("relationship").value;
+        const action = document.getElementById("add-or-remove").value;
+        await add_remove_relationship(name1, name2, relation, action);
+        const doneDiv = document.getElementById("done-remove");
+        doneDiv.innerHTML = "Done! Add or remove more relationships if you want";
+    });
+}
 
 const submit_btn_remove = document.getElementById("submit-btn-person")
 if (submit_btn_remove) {
