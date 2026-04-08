@@ -111,5 +111,36 @@ function drawGraph(nodes, links) {
         node.attr("transform", d => `translate(${d.x},${d.y})`);
     });
 }
+const Denque = require("denque");
+
+// BFS for single connected component
+function bfs(adj) {
+    const V = adj.length;
+    const visited = new Array(V).fill(false);
+    const res = [];
+
+    const q = new Denque();
+
+    let src = 0;
+    visited[src] = true;
+    q.push(src);
+
+    while (!q.isEmpty()) {
+        const curr = q.shift();
+        res.push(curr);
+
+        // visit all the unvisited
+        // neighbours of current node
+        for (const x of adj[curr]) {
+            if (!visited[x]) {
+                visited[x] = true;
+                q.push(x);
+            }
+        }
+    }
+
+    return res;
+}
+
 
 loadGraph();
