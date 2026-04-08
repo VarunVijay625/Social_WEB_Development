@@ -5,30 +5,56 @@
   <link rel="stylesheet" href="styles.css">
   <title>Da Wab</title>
 </head>
+<script>
+  function changeTypeToAdd() {
+    document.getElementById("input").innerHTML = "Type person's first name and last initial: "+'<input type="text" id="myInput" placeholder="Type the name...">'
+  }
+  function changeTypeToRemove() {
+    document.getElementById("input").innerHTML = "Select the person's name: "+'<select id="names">'+'placeholder'+'</select>'
+  }
+</script>
 <body>
   <div id="navbar-placeholder"></div>
-  
+
   <h1>Add or Remove a Person</h1>
-  <input type="radio" id="add" name="choice" value="add" onclick="ChangeEnabled()" checked>
-  <label for="option1">Add a Person</label><br>
-  <input type="radio" id="remove" name="choice" value="remove" onclick="ChangeEnabled()" >
-  <label for="option2">Remove a Person</label>
+  <input type="radio" id="add" name="choice" value="add" onclick="changeTypeToAdd()" checked>
+  <label for="add">Add a Person</label><br>
+  <input type="radio" id="remove" name="choice" value="remove" onclick="changeTypeToRemove()" >
+  <label for="remove">Remove a Person</label>
+
 </form>
-  <p>Type person's first name and last initial:
+  <p id="input">Type person's first name and last initial:
     <input type="text" id="myInput" placeholder="Type the name...">
   </p>
-    <p>Select the person's name:
-  <select disabled id="names">
-      placeholder
-    </select>
-  </p>
-  <p><button id="submit-btn-remove" onclick="add_person(myInput)">submit</button></p>
+
+  <p><button id="submit-btn-remove" onclick="remove_person(myInput)">Submit</button></p>
+  <p><button id="submit-btn-add-person" onclick="add_person(myInput)">Submit</button></p>
 
 
   <div id="results"></div>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="script.js"></script>
+
+  <script>
+    // Fetch the navigation component
+    fetch('nav.html')
+      .then(response => {
+      // Check if the request was successful
+      if (!response.ok) {
+        throw new Error(`Failed to load nav: ${response.status}`);
+      }
+      return response.text(); // Convert response to text
+      })
+      .then(navHTML => {
+      // Insert the navigation HTML into the placeholder
+      document.getElementById('navbar-placeholder').innerHTML = navHTML;
+      })
+      .catch(error => {
+      // Log errors (e.g., if nav.html is missing)
+      console.error('Error loading navigation:', error);
+      });
+  </script>
 
 </body>
 </html>

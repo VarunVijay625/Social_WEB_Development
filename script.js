@@ -237,48 +237,11 @@ async function name_exists(name) {
         console.error("Query error", err);
     }
 }
-
+//find the highest id number and call it id or something
+//create a doc using the const await db syntx that assigns name and id and nothing
+//this is the liat of ids plus the new one you need, get the highest number in this list and call it id or something
 // function that adds people to the database
-async function add_person(name){
-    //find the highest id number and call it id or something
-    //create a doc using the const await db syntx that assigns name and id and nothing
-    //this is the liat of ids plus the new one you need, get the highest number in this list and call it id or something
-    try {
-        const name_found = await name_exists(name)
-        if (name_found){
-            console.log("This name is already in the web")
-        }
-        const highest_id = await new_person_id();
-        console.log(highest_id);
-        const new_person_id = highest_id[0];
-        console.log(new_person_id);
-        const new_id = highest_id[1];
-        const person_added = {
-            Coworker: [],
-            Dating: [],
-            Friend: [],
-            ["Have Met"]: [],
-            Name: name,
-            Password: "",
-            Roommate: [],
-            ["Secret 3rd"]: [],
-            Supervisor: [],
-            Teammate: [],
-            ["Unique ID"]: new_id,
-            Username: ""
-        };
-        const action = await db.collection('Local Web').doc(new_person_id).set(person_added)
 
-        console.log( name, "was added successfully");
-
-        return person_added;
-
-    } catch (err) {
-        console.error("Query error: ", err);
-        return [];
-    }
-    //find syntax to push a new person to the db given id and name (see create account w name)
-}
 // function that removes people from the database
 async function remove_person(name){
     try {
@@ -437,7 +400,41 @@ async function create_account_wo_name(user, pass, name) {
         return [];
     }
 }
+async function add_person(name){
+    try {
+        const name_found = await name_exists(name)
+        if (name_found){
+            console.log("This name is already in the web")
+        }
+        const highest_id = await new_person_id();
+        console.log(highest_id);
+        const new_person_id = highest_id[0];
+        console.log(new_person_id);
+        const new_id = highest_id[1];
+        const person_added = {
+            Coworker: [],
+            Dating: [],
+            Friend: [],
+            ["Have Met"]: [],
+            Name: name,
+            Password: "",
+            Roommate: [],
+            ["Secret 3rd"]: [],
+            Supervisor: [],
+            Teammate: [],
+            ["Unique ID"]: new_id,
+            Username: ""
+        };
+        const action = await db.collection('Local Web').doc(new_person_id).set(person_added)
 
+        console.log( name, "was added successfully");
+
+        return person_added;
+    } catch (err) {
+        console.error("Query error: ", err);
+        return [];
+    }
+}
 // A function that "creates an account" for the user when the user's name does not exist in the database
 // this edits the Password and Username field for an existing document
 async function create_account_w_name(user, pass, name) {
@@ -521,6 +518,15 @@ if (relation_submit) {
         doneDiv.innerHTML = "Done! Add or remove more relationships if you want";
     });
 }
+const submit_btn_add = document.getElementById("submit-btn-add-person")
+if (submit_btn_add) {
+    submit_btn_add.addEventListener("click", async () => {
+        const name = document.getElementById("names").value
+        console.log(name)
+        await add_person(name);
+    });
+}
+
 
 const submit_btn_remove = document.getElementById("submit-btn-person")
 if (submit_btn_remove) {
