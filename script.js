@@ -38,6 +38,10 @@ async function loadDropIndex(){
     if (name_dropdown_3) {
         name_dropdown_3.innerHTML = optionHTML;
     }
+    const name_dropdown_4 = document.getElementById("names_4");
+    if (name_dropdown_4) {
+        name_dropdown_4.innerHTML = optionHTML;
+    }
 }
 
 const app = firebase.initializeApp(firebaseConfig);
@@ -408,7 +412,7 @@ async function add_person(name){
         }
         const highest_id = await new_person_id();
         console.log(highest_id);
-        const new_person_id = highest_id[0];
+        const new_user_id = highest_id[0];
         console.log(new_person_id);
         const new_id = highest_id[1];
         const person_added = {
@@ -416,7 +420,7 @@ async function add_person(name){
             Dating: [],
             Friend: [],
             ["Have Met"]: [],
-            Name: name,
+            Name: name || null,
             Password: "",
             Roommate: [],
             ["Secret 3rd"]: [],
@@ -425,7 +429,7 @@ async function add_person(name){
             ["Unique ID"]: new_id,
             Username: ""
         };
-        const action = await db.collection('Local Web').doc(new_person_id).set(person_added)
+        const action = await db.collection('Local Web').doc(new_user_id).set(person_added)
 
         console.log( name, "was added successfully");
 
@@ -521,7 +525,7 @@ if (relation_submit) {
 const submit_btn_add = document.getElementById("submit-btn-add-person")
 if (submit_btn_add) {
     submit_btn_add.addEventListener("click", async () => {
-        const name = document.getElementById("names").value
+        const name = document.getElementById("myInput").value
         console.log(name)
         await add_person(name);
     });
