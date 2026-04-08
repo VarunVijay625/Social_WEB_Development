@@ -11,7 +11,7 @@ const firebaseConfig = {
 const accts =[]
 const people =[]
 //Function loadDropIndex takes the empty "people" array and reads the database's names and populates it bases on that
-async function loadDropIndex() {
+async function loadDropIndex(){
     const snapshot = await db.collection("Local Web").get();
     //read all documents and extract name to push onto 'people' array
     snapshot.forEach(doc => {
@@ -33,11 +33,6 @@ async function loadDropIndex() {
     if (name_dropdown_2) {
         name_dropdown_2.innerHTML = optionHTML;
     }
-    // option for the dropdown in removing people in add_remov_ppl.html since it is a string
-    const {placeholder_value} = require("./add_remov_ppl.html");
-    if (placeholder_value) {
-        let val = placeholder_value.val;
-        val.replace("placeholder", "test");
     // option for third dropdown of names
     const name_dropdown_3 = document.getElementById("names_3");
     if (name_dropdown_3) {
@@ -47,7 +42,6 @@ async function loadDropIndex() {
     if (name_dropdown_4) {
         name_dropdown_4.innerHTML = optionHTML;
     }
-}
 }
 
 function returnOptions() {
@@ -256,14 +250,10 @@ async function name_exists(name) {
         console.error("Query error", err);
     }
 }
-
+//find the highest id number and call it id or something
+//create a doc using the const await db syntx that assigns name and id and nothing
+//this is the liat of ids plus the new one you need, get the highest number in this list and call it id or something
 // function that adds people to the database
-async function add_person(name) {
-    //find the highest id number and call it id or something
-    //create a doc using the const await db syntx that assigns name and id and nothing
-    //this is the liat of ids plus the new one you need, get the highest number in this list and call it id or something
-// function that adds people to the database
-}
 
 // function that removes people from the database
 async function remove_person(name){
@@ -554,9 +544,9 @@ if (submit_btn_add_remove) {
             await add_person(name);
         }
         if (remove.checked) {
-        const name = document.getElementById("names").value
-        console.log(name)
-        await remove_person(name);
+            const name = document.getElementById("names").value
+            console.log(name)
+            await remove_person(name);
         }
     });
 }
