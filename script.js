@@ -315,8 +315,11 @@ async function login_page(user, pass) {
             if (user_found) {
                 window.location.replace("index.html");
             } else {
-                document.getElementById("error").innerHTML = "Invalid credentials.\n You are now being redirected to create an account.";
-                window.location.replace("create_acct.html");
+               document.getElementById("error").innerHTML = "Invalid credentials,You are now being redirected to create an account.";
+
+               window.location.replace("create_acct.html");
+                //setTimeout(()=> document.getElementById("error").innerHTML = "Invalid credentials,You are now being redirected to create an account.",5000);
+
             }
 
         });
