@@ -256,21 +256,7 @@ async function name_exists(name) {
 // function that adds people to the database
 
 // function that removes people from the database
-async function remove_person(name){
-    try {
-        const highest_id = await new_person_id();
-        console.log(highest_id);
-        const person_id = highest_id[0];
-        console.log(person_id);
-        const action = await db.collection('Local Web').doc(person_id).delete();
 
-    } catch (err) {
-        console.error("Query error: ", err);
-        return [];
-    }
-
-
-}
 // function that adds or removes relationship
 async function add_remove_relationship(name1, name2, relation, action) {
     try {
@@ -448,6 +434,19 @@ async function add_person(name){
         return [];
     }
 }
+// function that removes people from the database
+async function remove_person(name){
+    try {
+        const removing_name = await get_id_wname(name)
+        const action = await db.collection('Local Web').doc(removing_name).delete();
+
+    } catch (err) {
+        console.error("Query error: ", err);
+        return [];
+    }
+
+
+}
 // A function that "creates an account" for the user when the user's name does not exist in the database
 // this edits the Password and Username field for an existing document
 async function create_account_w_name(user, pass, name) {
@@ -542,10 +541,12 @@ if (submit_btn_add_remove) {
             const name = document.getElementById("myInput").value
             console.log(name)
             await add_person(name);
+            alert("person added!")
         }
         if (remove.checked) {
             const name = document.getElementById("names").value
             console.log(name)
+            console.log("removed")
             await remove_person(name);
         }
     });
