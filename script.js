@@ -427,6 +427,7 @@ async function add_person(name){
         const action = await db.collection('Local Web').doc(new_user_id).set(person_added)
 
         console.log( name, "was added successfully");
+        action.innerHTML = (name ,"added successfully!");
 
         return person_added;
     } catch (err) {
@@ -533,6 +534,8 @@ if (relation_submit) {
 const submit_btn_add_remove = document.getElementById("submit-btn-people");
 const add = document.getElementById("add");
 const remove = document.getElementById("remove");
+//add.innerHTML = "Person added successfully!";
+//remove.innerHTML = "Person removed successfully!";
 console.log(add);
 console.log(remove);
 if (submit_btn_add_remove) {
@@ -541,13 +544,16 @@ if (submit_btn_add_remove) {
             const name = document.getElementById("myInput").value
             console.log(name)
             await add_person(name);
-            alert("person added!")
+            alert(name +" was added successfully");
+           // add.innerHTML = "Person added successfully!";
         }
         if (remove.checked) {
             const name = document.getElementById("names").value
             console.log(name)
             console.log("removed")
             await remove_person(name);
+            alert(name +" was removed successfully");
+
         }
     });
 }
