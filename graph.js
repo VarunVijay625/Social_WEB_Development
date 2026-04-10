@@ -42,8 +42,9 @@ async function loadGraph() {
             }
         });
     });
-
-    drawGraph(nodes, links);
+    const nodeIds = new Set(nodes.map(n => n.id));
+    const filteredLinks = links.filter(l => nodeIds.has(l.source) && nodeIds.has(l.target));
+    drawGraph(nodes, filteredLinks);
 }
 
 function drawGraph(nodes, links) {
