@@ -21,8 +21,9 @@
   },
   "homepage": "https://github.com/VarunVijay625/Social_WEB_Development#readme",
   "dependencies": {
+    "denque": "^2.1.0",
     "firebase": "^12.10.0",
-    "firebase-admin": "^13.7.0"
+    "firebase-admin": "^10.3.0"
   },
   "devDependencies": {
     "vite": "^7.3.1"

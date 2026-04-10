@@ -112,7 +112,7 @@ function drawGraph(nodes, links) {
     });
 }
 //const Denque = require("denque");
-import Denque from './denque.js';
+//import Denque from './denque.js';
 
 // BFS for single connected component
 function bfs(adj) {
