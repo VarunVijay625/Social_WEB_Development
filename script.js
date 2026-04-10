@@ -7,7 +7,6 @@ const firebaseConfig = {
     appId: "1:621332128804:web:94424f8ba5b97549fbe4b1",
     measurementId: "G-S0J91M5KEQ"
 };
-
 const accts =[]
 const people =[]
 //Function loadDropIndex takes the empty "people" array and reads the database's names and populates it bases on that
