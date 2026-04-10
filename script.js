@@ -249,12 +249,6 @@ async function name_exists(name) {
         console.error("Query error", err);
     }
 }
-//find the highest id number and call it id or something
-//create a doc using the const await db syntx that assigns name and id and nothing
-//this is the liat of ids plus the new one you need, get the highest number in this list and call it id or something
-// function that adds people to the database
-
-// function that removes people from the database
 
 // function that adds or removes relationship
 async function add_remove_relationship(name1, name2, relation, action) {
@@ -402,7 +396,7 @@ async function create_account_wo_name(user, pass, name) {
         return [];
     }
 }
-// this function adds a person to the dataset with a name and an unique id leaving the others fields empty
+// this function adds a person to the database with a name and a unique id leaving the others fields empty
 async function add_person(name){
     try {
         const name_found = await name_exists(name)
@@ -428,10 +422,9 @@ async function add_person(name){
             ["Unique ID"]: new_id,
             Username: ""
         };
-        const action = await db.collection('Local Web').doc(new_user_id).set(person_added)
+        const action = await db.collection('Local Web').doc(new_user_id).set(person_added);
 
         console.log( name, "was added successfully");
-        action.innerHTML = (name ,"added successfully!");
 
         return person_added;
     } catch (err) {
@@ -535,11 +528,10 @@ if (relation_submit) {
         doneDiv.innerHTML = "Done! Add or remove more relationships if you want";
     });
 }
+// add/ remove people button
 const submit_btn_add_remove = document.getElementById("submit-btn-people");
 const add = document.getElementById("add");
 const remove = document.getElementById("remove");
-//add.innerHTML = "Person added successfully!";
-//remove.innerHTML = "Person removed successfully!";
 console.log(add);
 console.log(remove);
 if (submit_btn_add_remove) {
@@ -548,14 +540,16 @@ if (submit_btn_add_remove) {
             const name = document.getElementById("myInput").value
             console.log(name)
             await add_person(name);
+            name.innerHTML = (name, "was added successfully")
+
             alert(name +" was added successfully");
-           // add.innerHTML = "Person added successfully!";
         }
         if (remove.checked) {
             const name = document.getElementById("names").value
             console.log(name)
             console.log("removed")
             await remove_person(name);
+            name.innerHTML = (name, "was removed successfully")
             alert(name +" was removed successfully");
 
         }
