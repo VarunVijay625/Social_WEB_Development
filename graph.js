@@ -111,7 +111,8 @@ function drawGraph(nodes, links) {
         node.attr("transform", d => `translate(${d.x},${d.y})`);
     });
 }
-const Denque = require("denque");
+//const Denque = require("denque");
+import Denque from './denque.js';
 
 // BFS for single connected component
 function bfs(adj) {
