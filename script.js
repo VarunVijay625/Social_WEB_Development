@@ -315,11 +315,12 @@ async function login_page(user, pass) {
             if (user_found) {
                 window.location.replace("index.html");
             } else {
-               document.getElementById("error").innerHTML = "Invalid credentials,You are now being redirected to create an account.";
+               document.getElementById("error").innerHTML = "Invalid credentials,you are now being redirected to create an account.";
 
-               window.location.replace("create_acct.html");
-                //setTimeout(()=> document.getElementById("error").innerHTML = "Invalid credentials,You are now being redirected to create an account.",5000);
-
+               setTimeout(() =>
+                {
+                    window.location.replace("create_acct.html");
+                }, 5000)
             }
 
         });
@@ -402,6 +403,7 @@ async function create_account_wo_name(user, pass, name) {
         return [];
     }
 }
+// this function adds a person to the dataset with a name and an unique id leaving the others fields empty
 async function add_person(name){
     try {
         const name_found = await name_exists(name)
