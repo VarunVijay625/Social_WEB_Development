@@ -32,12 +32,12 @@ async function loadGraph() {
 
     snapshot.forEach(doc => {
         const data = doc.data();
-        nodes.push({ id: data["Unique ID"], name: data.Name });
+        nodes.push({ id: String(data["Unique ID"]), name: data.Name });
         console.log(nodes)
         relationFields.forEach(rel => {
             if(data[rel]){
                 data[rel].forEach(targetId => {
-                    links.push({ source: data["Unique ID"], target: targetId, type: rel });
+                    links.push({ source: String(data["Unique ID"]), target: String(targetId), type: rel });
                 });
             }
         });
@@ -56,7 +56,7 @@ function drawGraph(nodes, links) {
         .attr("height", height);
 
     const simulation = d3.forceSimulation(nodes)
-        .force("link", d3.forceLink(links).id(d => d.id).distance(120))
+        .force("link", d3.forceLink(links).id(d => String(d.id)).distance(120))
         .force("charge", d3.forceManyBody().strength(-300))
         .force("center", d3.forceCenter(width / 2, height / 2));
 
