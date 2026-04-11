@@ -25,6 +25,7 @@ const colorMap = {
 const adjList={}
 
 function bfsShortestPath(adjList, start, end) {
+    //console.log(adjList)
     if (start === end) return [start];
 
     const queue = [start];
@@ -114,15 +115,37 @@ async function loadGraph() {
     //console.log(nodeNames)
     //console.log(nodes)
     //console.log(links)
-
-
-    // Example usage:
-
-     // Output: ['A', 'C', 'F']
-    
-    console.log(bfsShortestPath(adjList, 'Hannah D', 'Brandon A'));
+    let result = bfsShortestPath(adjList, 'Ellie A', 'Ellie G');
+    let finalList = [];
+    //console.log(result);
+    for(let i=0;i<result.length - 1;i++){
+        for(let j=0;j<relList.length;j++){
+            if(relList[j][0] == result[i] && relList[j][2] == result[i + 1]){
+                finalList.push(result[i])
+                finalList.push(relList[j][1])
+            }
+        }
+    }
+    finalList.push(result[result.length - 1])
+    console.log(finalList);
     drawGraph(nodes, filteredLinks);
+    let finalVal = [adjList, relList];
+    //console.log(finalVal)
+    return finalVal;
 }
+
+// function degreesSeparation(PersonA, PersonB){
+//     drawGraph().then(data => {
+//         console.log(data); // This will log the actual Array(2)
+//     });
+//     console.log(adjList)
+//     console.log('hi')
+//     console.log(adjList[0])
+//     console.log('hi the sequl')
+//     let relList = loadGraph[1];
+    
+// }
+
 
 function drawGraph(nodes, links) {
     const width = window.innerWidth;
@@ -191,4 +214,4 @@ function drawGraph(nodes, links) {
 }
 //const Denque = require("denque");
 loadGraph();
-console.log(adjList)
+//console.log(degreesSeparation('Ellie A', 'Ellie G'))
