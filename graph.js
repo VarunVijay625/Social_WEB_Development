@@ -22,6 +22,41 @@ const colorMap = {
     "Teammate":   "teal"
 };
 
+const adjList={}
+
+function bfsShortestPath(adjList, start, end) {
+    if (start === end) return [start];
+
+    const queue = [start];
+    const visited = new Set([start]);
+    const parent = { [start]: null }; // Maps node -> its predecessor
+
+    while (queue.length > 0) {
+        const current = queue.shift();
+
+        // If we found the destination, reconstruct the path
+        if (current === end) {
+            const path = [];
+            let step = end;
+            while (step !== null) {
+                path.push(step);
+                step = parent[step];
+            }
+            return path.reverse(); // Path from start to end
+        }
+
+        // Explore neighbors
+        for (const neighbor of (adjList[current] || [])) {
+            if (!visited.has(neighbor)) {
+                visited.add(neighbor);
+                parent[neighbor] = current;
+                queue.push(neighbor);
+            }
+        }
+    }
+    return null;
+}
+
 const relationFields = ["Friend", "Dating", "Coworker", "Roommate", "Have Met", "Secret 3rd", "Supervisor", "Teammate"];
 
 async function loadGraph() {
@@ -33,7 +68,7 @@ async function loadGraph() {
     snapshot.forEach(doc => {
         const data = doc.data();
         nodes.push({ id: String(data["Unique ID"]), name: data.Name });
-        console.log(nodes)
+        //console.log(nodes)
         relationFields.forEach(rel => {
             if(data[rel]){
                 data[rel].forEach(targetId => {
@@ -43,7 +78,49 @@ async function loadGraph() {
         });
     });
     const nodeIds = new Set(nodes.map(n => n.id));
+    const arrIds = nodes.map(n => n.id);
     const filteredLinks = links.filter(l => nodeIds.has(l.source) && nodeIds.has(l.target));
+    const nodeNames = nodes.map(n => n.name);
+
+    console.log(nodeNames.length)
+    for(let i = 0; i < nodeNames.length; i++){
+        //console.log(nodeNames[i])
+    }
+    const relList = new Array()
+    for(let i = 0; i < links.length -1; i++){
+        //console.log(nodeNames[links[i].source - 1]+links[i].type+nodeNames[links[i].target -1])
+        relList.push([nodeNames[links[i].source - 1], links[i].type, nodeNames[links[i].target -1]])
+    }
+    for(let i = 0; i < relList.length; i++){
+        //console.log(relList[i])
+    }
+
+    for(let i = 0; i < nodeNames.length; i++){
+        const adjListVal = []
+        for(let j = 0; j < links.length; j++){
+            //console.log(nodeNames[i] + nodeNames[links[j].source - 1])
+            if(nodeNames[i] == nodeNames[links[j].source - 1]){
+                //console.log(nodeNames[i] + nodeNames[links[j].target - 1])
+                const human = String(nodeNames[links[j].target - 1])
+                if(!adjListVal.includes(human)){
+                    adjListVal.push(human)
+                }
+            }
+        }
+        const person = String(nodeNames[i])
+        adjList[person] = adjListVal
+    }
+    //console.log(adjList)
+    //console.log(nodeNames)
+    //console.log(nodes)
+    //console.log(links)
+
+
+    // Example usage:
+
+     // Output: ['A', 'C', 'F']
+    
+    console.log(bfsShortestPath(adjList, 'Hannah D', 'Brandon A'));
     drawGraph(nodes, filteredLinks);
 }
 
@@ -113,36 +190,5 @@ function drawGraph(nodes, links) {
     });
 }
 //const Denque = require("denque");
-//import Denque from './denque.js';
-
-// BFS for single connected component
-function bfs(adj) {
-    const V = adj.length;
-    const visited = new Array(V).fill(false);
-    const res = [];
-
-    const q = new Denque();
-
-    let src = 0;
-    visited[src] = true;
-    q.push(src);
-
-    while (!q.isEmpty()) {
-        const curr = q.shift();
-        res.push(curr);
-
-        // visit all the unvisited
-        // neighbours of current node
-        for (const x of adj[curr]) {
-            if (!visited[x]) {
-                visited[x] = true;
-                q.push(x);
-            }
-        }
-    }
-
-    return res;
-}
-
-
 loadGraph();
+console.log(adjList)

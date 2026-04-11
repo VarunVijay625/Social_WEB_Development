@@ -10,7 +10,7 @@ const firebaseConfig = {
 const accts =[]
 const people =[]
 //Function loadDropIndex takes the empty "people" array and reads the database's names and populates it bases on that
-async function loadDropIndex(){
+async function loadDropIndex(isExtraRow){
     const snapshot = await db.collection("Local Web").get();
     //read all documents and extract name to push onto 'people' array
     snapshot.forEach(doc => {
@@ -22,7 +22,12 @@ async function loadDropIndex(){
     for (var i = 0; i < people.length; i++) {
     optionHTML += `<option value="${people[i].name}">${people[i].name}</option>`;
     }
-    optionHTML += `<option value="My name is not listed">My name is not listed</option>`;
+    if(isExtraRow){
+        optionHTML += `<option value="My name is not listed">My name is not listed</option>`;
+    }
+    else{
+        console.log('works')
+    }
     const name_dropdown = document.getElementById("names");
     if (name_dropdown) {
         name_dropdown.innerHTML = optionHTML;
@@ -605,4 +610,4 @@ async function ChangeEnabled(){
                 }
             });
         }
-loadDropIndex(people)
+//loadDropIndex(people)
