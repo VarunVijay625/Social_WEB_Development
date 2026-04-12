@@ -3,6 +3,7 @@ body {
     color: #FFC800;
     font-family: arial;
     letter-spacing: .5px;
+    font-size: 20px;
 }
 
 h1 {
@@ -39,6 +40,10 @@ input[type=submit] {
     button {
         background-color: lightgray;
     }
+}
+
+.create_acct_page {
+    text-align: center;
 }
 
 .button-link {
