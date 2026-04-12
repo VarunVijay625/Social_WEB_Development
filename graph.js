@@ -119,7 +119,7 @@ async function loadGraph(PersonA, PersonB) {
     console.log(result)
     let finalList = [];
     //console.log(relList);
-    for(let i=0;i<result.length - 1;i++){
+    for(let i=0;i<result.length-1;i++){
         for(let j=0;j<relList.length;j++){
             if(relList[j][0] == result[i] && relList[j][2] == result[i + 1]){
                 finalList.push(result[i])
