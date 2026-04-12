@@ -19,7 +19,7 @@ If user is in the database, but doesn't yet have an account, they can also creat
 Current capabilities:  
 + User can create an account.  
 + User can see web based on current database.  
-+ User can query for certain relationships to certain people.
++ User can find the connecting path between people through people.
 + User can log in if they already have an account
 + User can add people to the web
 + User can remove people from the web
