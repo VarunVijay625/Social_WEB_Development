@@ -5,27 +5,21 @@
   <link rel="stylesheet" href="styles.css">
   <title>Da Wab</title>
 </head>
-<body onload="loadDropIndex(true)">
+<body>
   <div id="navbar-placeholder"></div>
 
-  <p>Name:
+  <p>Connect:
     <select id="names">
       placeholder
     </select>
-  </p>
-  <p>Relation:
-    <select id="relation-select">
-      <option>coworker</option>
-      <option>dating</option>
-      <option>friend</option>
-      <option>have met</option>
-      <option>roommate</option>
-      <option>secret 3rd</option>
-      <option>supervisor</option>
-      <option>teammate</option>
+    To:
+    <select id="names_2">
+      placeholder
     </select>
   </p>
-  <p><input type="checkbox" id="detail-check"> detail</p>
+  <script>
+
+  </script>
   <p><button id="submit-btn">submit</button></p>
 
   <hr>
@@ -33,8 +27,10 @@
   <div id="results"></div>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+  <script src="fb-init.js"></script>
+  <script src="graph.js"></script>
   <script src="script.js"></script>
-
   <script>
   // Fetch the navigation component
   fetch('nav.html')

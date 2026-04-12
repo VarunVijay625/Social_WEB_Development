@@ -1,15 +1,16 @@
-const firebaseConfig = {
-    apiKey: "AIzaSyDP7snJVxhiQSQs7Z8CzGA9uvk5qdLkJhQ",
-    authDomain: "social-web-dev.firebaseapp.com",
-    projectId: "social-web-dev",
-    storageBucket: "social-web-dev.firebasestorage.app",
-    messagingSenderId: "621332128804",
-    appId: "1:621332128804:web:94424f8ba5b97549fbe4b1",
-    measurementId: "G-S0J91M5KEQ"
-};
-
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
+// const firebaseConfig = {
+//     apiKey: "AIzaSyDP7snJVxhiQSQs7Z8CzGA9uvk5qdLkJhQ",
+//     authDomain: "social-web-dev.firebaseapp.com",
+//     projectId: "social-web-dev",
+//     storageBucket: "social-web-dev.firebasestorage.app",
+//     messagingSenderId: "621332128804",
+//     appId: "1:621332128804:web:94424f8ba5b97549fbe4b1",
+//     measurementId: "G-S0J91M5KEQ"
+// }
+// if (!firebase.apps.length) {
+//     firebase.initializeApp(firebaseConfig);
+// }
+//const db = firebase.firestore();
 
 const colorMap = {
     "Friend":     "blue",
@@ -60,7 +61,7 @@ function bfsShortestPath(adjList, start, end) {
 
 const relationFields = ["Friend", "Dating", "Coworker", "Roommate", "Have Met", "Secret 3rd", "Supervisor", "Teammate"];
 
-async function loadGraph() {
+async function loadGraph(PersonA, PersonB) {
     const snapshot = await db.collection("Local Web").get();
 
     const nodes = [];
@@ -79,7 +80,6 @@ async function loadGraph() {
         });
     });
     const nodeIds = new Set(nodes.map(n => n.id));
-    const arrIds = nodes.map(n => n.id);
     const filteredLinks = links.filter(l => nodeIds.has(l.source) && nodeIds.has(l.target));
     const nodeNames = nodes.map(n => n.name);
 
@@ -115,23 +115,23 @@ async function loadGraph() {
     //console.log(nodeNames)
     //console.log(nodes)
     //console.log(links)
-    let result = bfsShortestPath(adjList, 'Ellie A', 'Ellie G');
+    let result = bfsShortestPath(adjList, PersonA, PersonB);
+    console.log(result)
     let finalList = [];
-    //console.log(result);
+    //console.log(relList);
     for(let i=0;i<result.length - 1;i++){
         for(let j=0;j<relList.length;j++){
             if(relList[j][0] == result[i] && relList[j][2] == result[i + 1]){
                 finalList.push(result[i])
                 finalList.push(relList[j][1])
+                break;
             }
         }
     }
     finalList.push(result[result.length - 1])
     console.log(finalList);
     drawGraph(nodes, filteredLinks);
-    let finalVal = [adjList, relList];
-    //console.log(finalVal)
-    return finalVal;
+    return finalList;
 }
 
 // function degreesSeparation(PersonA, PersonB){
@@ -212,6 +212,23 @@ function drawGraph(nodes, links) {
         node.attr("transform", d => `translate(${d.x},${d.y})`);
     });
 }
-//const Denque = require("denque");
-loadGraph();
+// console.log('does it work')
+const submit_btn = document.getElementById("submit-btn")
+// if (submit_btn) {
+//     submit_btn.addEventListener("click", async () => {
+        
+//         document.getElementById("results").innerHTML = loadGraph(name, name2)[0]
+//     });
+// }
+
+submit_btn.addEventListener("click", async () => {
+    const name = document.getElementById("names").value
+        const name2 = document.getElementById("names_2").value
+    const result = await loadGraph(name, name2);
+    document.getElementById("results").innerHTML = result;
+});
+
+console.log(document.getElementById('names').value)
+
+console.log(loadGraph('Ellie G', 'Ellie A'));
 //console.log(degreesSeparation('Ellie A', 'Ellie G'))

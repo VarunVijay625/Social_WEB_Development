@@ -1,16 +1,16 @@
-const firebaseConfig = {
-    apiKey: "AIzaSyDP7snJVxhiQSQs7Z8CzGA9uvk5qdLkJhQ",
-    authDomain: "social-web-dev.firebaseapp.com",
-    projectId: "social-web-dev",
-    storageBucket: "social-web-dev.firebasestorage.app",
-    messagingSenderId: "621332128804",
-    appId: "1:621332128804:web:94424f8ba5b97549fbe4b1",
-    measurementId: "G-S0J91M5KEQ"
-};
+// const firebaseConfig = {
+//     apiKey: "AIzaSyDP7snJVxhiQSQs7Z8CzGA9uvk5qdLkJhQ",
+//     authDomain: "social-web-dev.firebaseapp.com",
+//     projectId: "social-web-dev",
+//     storageBucket: "social-web-dev.firebasestorage.app",
+//     messagingSenderId: "621332128804",
+//     appId: "1:621332128804:web:94424f8ba5b97549fbe4b1",
+//     measurementId: "G-S0J91M5KEQ"
+// };
 const accts =[]
 const people =[]
 //Function loadDropIndex takes the empty "people" array and reads the database's names and populates it bases on that
-async function loadDropIndex(isExtraRow){
+async function loadDropIndex(){
     const snapshot = await db.collection("Local Web").get();
     //read all documents and extract name to push onto 'people' array
     snapshot.forEach(doc => {
@@ -22,12 +22,7 @@ async function loadDropIndex(isExtraRow){
     for (var i = 0; i < people.length; i++) {
     optionHTML += `<option value="${people[i].name}">${people[i].name}</option>`;
     }
-    if(isExtraRow){
-        optionHTML += `<option value="My name is not listed">My name is not listed</option>`;
-    }
-    else{
-        console.log('works')
-    }
+
     const name_dropdown = document.getElementById("names");
     if (name_dropdown) {
         name_dropdown.innerHTML = optionHTML;
@@ -58,7 +53,7 @@ function returnOptions() {
 }
 
 const app = firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
+//const db = firebase.firestore();
 
 // A function that queries the database for people who have a specific relationship with a specific person
 // example: if the user selects "Jes B" and "Friend" do_query will return the friends of Jes B
@@ -495,30 +490,31 @@ window.onclick = function(event) {
         }
     }
 }
+
 // Display do_query results on index.html
-const submit_btn = document.getElementById("submit-btn")
-if (submit_btn) {
-    submit_btn.addEventListener("click", async () => {
-        const name = document.getElementById("names").value
-        let id = null;
-        let index = 0;
-        for (const p of people) {
-            if (p.name === name) {
-                id = people[index].id;
-            }
-            index += 1;
-        }
-        const relation = document.getElementById("relation-select").value;
-        const resultsDiv = document.getElementById("results");
-        resultsDiv.innerHTML = "loading...";
-        console.log(people);
-        const names = await do_query(id, relation);
-        console.log(names);
-        resultsDiv.innerHTML = names.length
-            ? names.map(name => `<p>${name}</p>`).join("")
-            : "<p>No results.</p>";
-    });
-}
+// const submit_btn = document.getElementById("submit-btn")
+// if (submit_btn) {
+//     submit_btn.addEventListener("click", async () => {
+//         const name = document.getElementById("names").value
+//         let id = null;
+//         let index = 0;
+//         for (const p of people) {
+//             if (p.name === name) {
+//                 id = people[index].id;
+//             }
+//             index += 1;
+//         }
+//         const relation = document.getElementById("relation-select").value;
+//         const resultsDiv = document.getElementById("results");
+//         resultsDiv.innerHTML = "loading...";
+//         console.log(people);
+//         const names = await do_query(id, relation);
+//         console.log(names);
+//         resultsDiv.innerHTML = names.length
+//             ? names.map(name => `<p>${name}</p>`).join("")
+//             : "<p>No results.</p>";
+//     });
+// }
 
 // add/remove relationships
 const relation_submit = document.getElementById("relation-submit-btn");
@@ -604,4 +600,4 @@ async function ChangeEnabled(){
                 }
             });
         }
-//loadDropIndex(people)
+loadDropIndex()
