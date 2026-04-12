@@ -83,7 +83,7 @@ async function loadGraph(PersonA, PersonB) {
     const filteredLinks = links.filter(l => nodeIds.has(l.source) && nodeIds.has(l.target));
     const nodeNames = nodes.map(n => n.name);
 
-    console.log(nodeNames.length)
+    //console.log(nodeNames.length)
     for(let i = 0; i < nodeNames.length; i++){
         //console.log(nodeNames[i])
     }
@@ -129,7 +129,7 @@ async function loadGraph(PersonA, PersonB) {
         }
     }
     finalList.push(result[result.length - 1])
-    console.log(finalList);
+    //console.log(finalList);
     drawGraph(nodes, filteredLinks);
     return finalList;
 }
@@ -220,15 +220,16 @@ const submit_btn = document.getElementById("submit-btn")
 //         document.getElementById("results").innerHTML = loadGraph(name, name2)[0]
 //     });
 // }
+if(submit_btn){
+    submit_btn.addEventListener("click", async () => {
+        const name = document.getElementById("names").value
+            const name2 = document.getElementById("names_2").value
+        const result = await loadGraph(name, name2);
+        document.getElementById("results").innerHTML = result;
+    });
+}
 
-submit_btn.addEventListener("click", async () => {
-    const name = document.getElementById("names").value
-        const name2 = document.getElementById("names_2").value
-    const result = await loadGraph(name, name2);
-    document.getElementById("results").innerHTML = result;
-});
-
-console.log(document.getElementById('names').value)
+//console.log(document.getElementById('names').value)
 
 console.log(loadGraph('Ellie G', 'Ellie A'));
 //console.log(degreesSeparation('Ellie A', 'Ellie G'))
