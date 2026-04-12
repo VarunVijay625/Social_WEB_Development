@@ -223,13 +223,15 @@ const submit_btn = document.getElementById("submit-btn")
 if(submit_btn){
     submit_btn.addEventListener("click", async () => {
         const name = document.getElementById("names").value
-            const name2 = document.getElementById("names_2").value
+        const name2 = document.getElementById("names_2").value;
         const result = await loadGraph(name, name2);
+        console.log(result.length)
         document.getElementById("results").innerHTML = result;
+        //document.getElementById("degrees").innerHTML = name + " and " + name2 + " are " + result.length - 1 + " degree(s) apart!";
     });
 }
 
 //console.log(document.getElementById('names').value)
 
-console.log(loadGraph('Ellie G', 'Ellie A'));
+loadGraph('Ellie G', 'Ellie A');
 //console.log(degreesSeparation('Ellie A', 'Ellie G'))

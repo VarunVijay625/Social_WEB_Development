@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" href="styles.css">
+  <title>Da Wab</title>
+</head>
+<body>
+  <div id="navbar-placeholder"></div>
+
+  <p>Connect:
+    <select id="names">
+      placeholder
+    </select>
+    To:
+    <select id="names_2">
+      placeholder
+    </select>
+  </p>
+  <script>
+
+  </script>
+  <p><button id="submit-btn">submit</button></p>
+
+  <hr>
+
+  <div id="results"></div>
+  <div id="degrees"></div>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+  <script src="fb-init.js"></script>
+  <script src="graph.js"></script>
+  <script src="script.js"></script>
+  <script>
+  // Fetch the navigation component
+  fetch('nav.html')
+    .then(response => {
+      // Check if the request was successful
+      if (!response.ok) {
+        throw new Error(`Failed to load nav: ${response.status}`);
+      }
+      return response.text(); // Convert response to text
+    })
+    .then(navHTML => {
+      // Insert the navigation HTML into the placeholder
+      document.getElementById('navbar-placeholder').innerHTML = navHTML;
+    })
+    .catch(error => {
+      // Log errors (e.g., if nav.html is missing)
+      console.error('Error loading navigation:', error);
+    });
+  </script>
+
+</body>
+</html>
