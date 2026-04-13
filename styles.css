@@ -1,5 +1,6 @@
 body {
-    background-color: #3d3d3d;
+    background-color: black;
+    background-image: url("background_pictures/sparks_2.jpg");
     color: #FFC800;
     font-family: arial;
     letter-spacing: .5px;
@@ -106,7 +107,7 @@ ul li {
 
 .drop-btn {
     padding: 12 px;
-    color: #3d3d3d;
+    color: black;
     text-decoration: none;
     font-size: 17px;
     text-align: center; /* If you want the text to be centered */
@@ -115,7 +116,7 @@ ul li {
 
 .login-dropdown a {
     padding: 12 px;
-    color: #3d3d3d;
+    color: black;
     text-decoration: none;
     font-size: 17px;
     text-align: left;
@@ -125,7 +126,7 @@ ul li {
 
 .drop-btn {
     background-color: #ffc800;
-    color: #3d3d3d;
+    color: black;
     font-family: arial;
     padding: 16px;
     font-size: 16px;
@@ -159,7 +160,7 @@ ul li {
 }
 
 .dropdown-content a{
-    color: #3d3d3d;
+    color: black;
     padding: 12px 16px;
     text-decoration: none;
     display: block;
