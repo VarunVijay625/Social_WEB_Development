@@ -1,13 +1,4 @@
-// const firebaseConfig = {
-//     apiKey: "AIzaSyDP7snJVxhiQSQs7Z8CzGA9uvk5qdLkJhQ",
-//     authDomain: "social-web-dev.firebaseapp.com",
-//     projectId: "social-web-dev",
-//     storageBucket: "social-web-dev.firebasestorage.app",
-//     messagingSenderId: "621332128804",
-//     appId: "1:621332128804:web:94424f8ba5b97549fbe4b1",
-//     measurementId: "G-S0J91M5KEQ"
-// };
-const accts =[]
+/* global db, firebase */
 const people =[]
 //Function loadDropIndex takes the empty "people" array and reads the database's names and populates it bases on that
 async function loadDropIndex(){
@@ -43,14 +34,14 @@ async function loadDropIndex(){
     }
 }
 
-function returnOptions() {
-    var optionHTML = "";
-    for (var i = 0; i < people.length; i++) {
-    optionHTML += `<option value="${people[i].name}">${people[i].name}</option>`;
-    }
-    optionHTML += `<option value="My name is not listed">My name is not listed</option>`;
-    return optionHTML;
-}
+// function returnOptions() {
+//     var optionHTML = "";
+//     for (var i = 0; i < people.length; i++) {
+//     optionHTML += `<option value="${people[i].name}">${people[i].name}</option>`;
+//     }
+//     optionHTML += `<option value="My name is not listed">My name is not listed</option>`;
+//     return optionHTML;
+// }
 
 //const app = firebase.initializeApp(firebaseConfig);
 //const db = firebase.firestore();
@@ -60,146 +51,7 @@ function returnOptions() {
 
 // A function that queries the database for people who have a specific relationship with a specific person
 // example: if the user selects "Jes B" and "Friend" do_query will return the friends of Jes B
-async function do_query(id, column) {
-    try {
-        const webRef = db.collection("Local Web");
-        const snapshot = await webRef.where('Unique ID', '==', id).get();
-        if (snapshot.empty) {
-            console.log('No matching documents.');
-            return [];
-        }
 
-        const names = [];
-
-        if(column === "friend"){
-            console.log("goes inside");
-            for(const doc of snapshot.docs){
-                const data = doc.data();
-                console.log(doc.id, '=>', data.Friend);
-                if(data.Friend){
-                    for(const relatedId of data.Friend){
-                        const relatedSnapshot = await webRef.where('Unique ID', '==', relatedId).get();
-                        relatedSnapshot.forEach(relatedDoc => {
-                            console.log(relatedDoc.data().Name);
-                            names.push(relatedDoc.data().Name);
-                        });
-                    }
-                }
-            }
-        }
-        if(column === "coworker"){
-            for(const doc of snapshot.docs){
-                const data = doc.data();
-                console.log(doc.id, '=>', data.Coworker);
-                if(data.Coworker){
-                    for(const relatedId of data.Coworker){
-                        const relatedSnapshot = await webRef.where('Unique ID', '==', relatedId).get();
-                        relatedSnapshot.forEach(relatedDoc => {
-                            console.log(relatedDoc.data().Name);
-                            names.push(relatedDoc.data().Name);
-                        });
-                    }
-                }
-            }
-        }
-        if(column === "dating"){
-            for(const doc of snapshot.docs){
-                const data = doc.data();
-                console.log(doc.id, '=>', data.Dating);
-                if(data.Dating){
-                    for(const relatedId of data.Dating){
-                        const relatedSnapshot = await webRef.where('Unique ID', '==', relatedId).get();
-                        relatedSnapshot.forEach(relatedDoc => {
-                            console.log(relatedDoc.data().Name);
-                            names.push(relatedDoc.data().Name);
-                        });
-                    }
-                }
-            }
-        }
-        if(column === "have met"){
-            for(const doc of snapshot.docs){
-                const data = doc.data();
-                console.log(doc.id, '=>', data["Have Met"]);
-                if(data["Have Met"]){
-                    for(const relatedId of data["Have Met"]){
-                        const relatedSnapshot = await webRef.where('Unique ID', '==', relatedId).get();
-                        relatedSnapshot.forEach(relatedDoc => {
-                            console.log(relatedDoc.data().Name);
-                            names.push(relatedDoc.data().Name);
-                        });
-                    }
-                }
-            }
-        }
-        if(column === "secret 3rd"){
-            for(const doc of snapshot.docs){
-                const data = doc.data();
-                console.log(doc.id, '=>', data["Secret 3rd"]);
-                if(data["Secret 3rd"]){
-                    for(const relatedId of data["Secret 3rd"]){
-                        const relatedSnapshot = await webRef.where('Unique ID', '==', relatedId).get();
-                        relatedSnapshot.forEach(relatedDoc => {
-                            console.log(relatedDoc.data().Name);
-                            names.push(relatedDoc.data().Name);
-                        });
-                    }
-                }
-            }
-        }
-        if(column === "roommate"){
-            for(const doc of snapshot.docs){
-                const data = doc.data();
-                console.log(doc.id, '=>', data.Roommate);
-                if(data.Roommate){
-                    for(const relatedId of data.Roommate){
-                        const relatedSnapshot = await webRef.where('Unique ID', '==', relatedId).get();
-                        relatedSnapshot.forEach(relatedDoc => {
-                            console.log(relatedDoc.data().Name);
-                            names.push(relatedDoc.data().Name);
-                        });
-                    }
-                }
-            }
-        }
-        if(column === "supervisor"){
-            for(const doc of snapshot.docs){
-                const data = doc.data();
-                console.log(doc.id, '=>', data.Supervisor);
-                if(data.Supervisor){
-                    for(const relatedId of data.Supervisor){
-                        const relatedSnapshot = await webRef.where('Unique ID', '==', relatedId).get();
-                        relatedSnapshot.forEach(relatedDoc => {
-                            console.log(relatedDoc.data().Name);
-                            names.push(relatedDoc.data().Name);
-                        });
-                    }
-                }
-            }
-        }
-        if(column === "teammate"){
-            for(const doc of snapshot.docs){
-                const data = doc.data();
-                console.log(doc.id, '=>', data.Teammate);
-                if(data.Teammate){
-                    for(const relatedId of data.Teammate){
-                        const relatedSnapshot = await webRef.where('Unique ID', '==', relatedId).get();
-                        relatedSnapshot.forEach(relatedDoc => {
-                            console.log(relatedDoc.data().Name);
-                            names.push(relatedDoc.data().Name);
-                        });
-                    }
-                }
-            }
-        }
-
-        return names;
-
-    } catch(err) {
-        console.error("Query error: ", err);
-        return [];
-    }
-}
 
 // function that takes the name of the user and gets the unique document id for that user (different than id field)
 async function get_id_wname(name) {
@@ -264,18 +116,18 @@ async function add_remove_relationship(name1, name2, relation, action) {
         console.log(name1_id);
         if(action === "add") {
             console.log("added?")
-            const union1Res = await name1Ref.update({
+            await name1Ref.update({
                 [relation]: firebase.firestore.FieldValue.arrayUnion(name2Unique)
             });
-            const union2Res = await name2Ref.update({
+            await name2Ref.update({
                 [relation]: firebase.firestore.FieldValue.arrayUnion(name1Unique)
             });
         }
         else {
-            const remove1Res = await name1Ref.update({
+            await name1Ref.update({
                 [relation]: firebase.firestore.FieldValue.arrayRemove(name2Unique)
             });
-            const remove2Res = await name2Ref.update({
+            await name2Ref.update({
                 [relation]: firebase.firestore.FieldValue.arrayRemove(name1Unique)
             });
         }
@@ -388,7 +240,7 @@ async function create_account_wo_name(user, pass, name) {
             ["Unique ID"]: new_id,
             Username: user
         };
-        const res = await db.collection('Local Web').doc(new_user_id).set(new_acct_info)
+        await db.collection('Local Web').doc(new_user_id).set(new_acct_info)
 
         return new_acct_info;
     } catch (err) {
@@ -422,7 +274,7 @@ async function add_person(name){
             ["Unique ID"]: new_id,
             Username: ""
         };
-        const action = await db.collection('Local Web').doc(new_user_id).set(person_added);
+        await db.collection('Local Web').doc(new_user_id).set(person_added);
 
         console.log( name, "was added successfully");
 
@@ -436,7 +288,7 @@ async function add_person(name){
 async function remove_person(name){
     try {
         const removing_name = await get_id_wname(name)
-        const action = await db.collection('Local Web').doc(removing_name).delete();
+        await db.collection('Local Web').doc(removing_name).delete();
 
     } catch (err) {
         console.error("Query error: ", err);
@@ -461,8 +313,8 @@ async function create_account_w_name(user, pass, name) {
         const existing_user = await docSnap.data().Username;
         const existing_pass = await docSnap.data().Password;
         if (existing_user === "" && existing_pass === "") {
-            const update_user = await docRef.update({Username: user});
-            const update_pass = await docRef.update({Password: pass});
+            await docRef.update({Username: user});
+            await docRef.update({Password: pass});
             return name;
         } else {
             return "Account already exists";
@@ -473,9 +325,9 @@ async function create_account_w_name(user, pass, name) {
     }
 }
 
-function myFunction() {
-    document.getElementById("create-login").classList.toggle("show");
-}
+// function myFunction() {
+//     document.getElementById("create-login").classList.toggle("show");
+// }
 
 // Close the dropdown if the user clicks outside of it
 window.onclick = function(event) {
@@ -557,18 +409,6 @@ if (submit_btn_add_remove) {
     });
 }
 
-async function ChangeEnabled(){
-    const selectedValue = document.querySelector('input[name="choice"]:checked').value;
-    if(selectedValue == "remove"){
-        document.getElementById("myInput").disabled = true;
-        document.getElementById("names").disabled = false;
-    }
-    else{
-       document.getElementById("myInput").disabled = false;
-       document.getElementById("names").disabled = true; 
-    }
-}
-
 // Create an account using either of the create account functions
         const create_account_form = document.getElementById("account-info")
         if (create_account_form) {
@@ -580,6 +420,7 @@ async function ChangeEnabled(){
                 const dropdown_name = document.getElementById("names").value;
                 const infoDiv = document.getElementById("login-info");
                 infoDiv.innerHTML = "loading...";
+                // eslint-disable-next-line no-useless-assignment
                 let infos = null;
                 if (dropdown_name === "My name is not listed") {
                     infos = await create_account_wo_name(user, pass, name);
