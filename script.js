@@ -295,6 +295,14 @@ async function ChangeEnabled(){
        document.getElementById("names").disabled = true; 
     }
 }
+function returnOptions() {
+    var optionHTML = "";
+    for (var i = 0; i < people.length; i++) {
+    optionHTML += `<option value="${people[i].name}">${people[i].name}</option>`;
+    }
+    optionHTML += `<option value="My name is not listed">My name is not listed</option>`;
+    return optionHTML;
+}
 // function that removes people from the database
 async function remove_person(name){
     try {
