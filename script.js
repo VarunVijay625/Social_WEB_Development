@@ -284,6 +284,17 @@ async function add_person(name){
         return [];
     }
 }
+async function ChangeEnabled(){
+    const selectedValue = document.querySelector('input[name="choice"]:checked').value;
+    if(selectedValue == "remove"){
+        document.getElementById("myInput").disabled = true;
+        document.getElementById("names").disabled = false;
+    }
+    else{
+       document.getElementById("myInput").disabled = false;
+       document.getElementById("names").disabled = true; 
+    }
+}
 // function that removes people from the database
 async function remove_person(name){
     try {
