@@ -1,6 +1,8 @@
 body {
     background-color: black;
     background-image: url("background_pictures/sparks_2.jpg");
+    background-size: cover;
+    background-position: center;
     color: #FFC800;
     font-family: arial;
     letter-spacing: .5px;
