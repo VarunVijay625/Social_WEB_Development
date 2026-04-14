@@ -546,7 +546,7 @@ if (submit_btn_add_remove) {
             alert(name +" was added successfully");
         }
         if (remove.checked) {
-            const name = document.getElementById("names").value
+            //let name = document.getElementById("names").value
             const name = document.getElementById("names_2").value
             console.log(name)
             console.log("removed")
