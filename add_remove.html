@@ -8,6 +8,7 @@
     function validateInput() {
         var action = document.getElementById("add-or-remove");
         var selectedValue = action.options[action.selectedIndex].value;
+        console.log(selectedValue)
         if (selectedValue == "add") {
             changeTypeToAdd();
         }
@@ -36,18 +37,18 @@
     // setInterval(validateInput, 1);
 </script>
 
-<body>
+<body onload="loadDropIndex()">
     <div id="navbar-placeholder"></div>
 
     <p>
     </select>
     <select id="add-or-remove" onchange="validateInput()">
-      <option>add</option>
-      <option>remove</option>
+      <option id="add">add</option>
+      <option id="remove">remove</option>
     </select>
 
     <select id="names_2">
-        placeholder
+        <option value="placeholder">pl</option>
     </select>
 
     <select id="relationship">
@@ -69,7 +70,10 @@
     <p><button id="relation-submit-btn">submit</button></p>
 
     <div id="done-remove"></div>
-
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+    <script src="fb-init.js"></script>
+    <script src="script.js"></script>
     <script>
         // Fetch the navigation component
         fetch('nav.html')
@@ -90,9 +94,6 @@
             });
     </script>
 
-    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-    <script src="fb-init.js"></script>
-    <script src="script.js"></script>
+
 </body>
 </html>
