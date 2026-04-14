@@ -1,4 +1,3 @@
-
 // const firebaseConfig = {
 //     apiKey: "AIzaSyDP7snJVxhiQSQs7Z8CzGA9uvk5qdLkJhQ",
 //     authDomain: "social-web-dev.firebaseapp.com",
@@ -53,8 +52,8 @@ function returnOptions() {
     return optionHTML;
 }
 
-//const app = firebase.initializeApp(firebaseConfig);
-//const db = firebase.firestore();
+const app = firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
 
 // A function that queries the database for people who have a specific relationship with a specific person
 // example: if the user selects "Jes B" and "Friend" do_query will return the friends of Jes B
@@ -493,29 +492,29 @@ window.onclick = function(event) {
 }
 
 // Display do_query results on index.html
-// const submit_btn = document.getElementById("submit-btn")
-// if (submit_btn) {
-//     submit_btn.addEventListener("click", async () => {
-//         const name = document.getElementById("names").value
-//         let id = null;
-//         let index = 0;
-//         for (const p of people) {
-//             if (p.name === name) {
-//                 id = people[index].id;
-//             }
-//             index += 1;
-//         }
-//         const relation = document.getElementById("relation-select").value;
-//         const resultsDiv = document.getElementById("results");
-//         resultsDiv.innerHTML = "loading...";
-//         console.log(people);
-//         const names = await do_query(id, relation);
-//         console.log(names);
-//         resultsDiv.innerHTML = names.length
-//             ? names.map(name => `<p>${name}</p>`).join("")
-//             : "<p>No results.</p>";
-//     });
-// }
+const submit_btn = document.getElementById("submit-btn")
+if (submit_btn) {
+    submit_btn.addEventListener("click", async () => {
+        const name = document.getElementById("names").value
+        let id = null;
+        let index = 0;
+        for (const p of people) {
+            if (p.name === name) {
+                id = people[index].id;
+            }
+            index += 1;
+        }
+        const relation = document.getElementById("relation-select").value;
+        const resultsDiv = document.getElementById("results");
+        resultsDiv.innerHTML = "loading...";
+        console.log(people);
+        const names = await do_query(id, relation);
+        console.log(names);
+        resultsDiv.innerHTML = names.length
+            ? names.map(name => `<p>${name}</p>`).join("")
+            : "<p>No results.</p>";
+    });
+}
 
 // add/remove relationships
 const relation_submit = document.getElementById("relation-submit-btn");
