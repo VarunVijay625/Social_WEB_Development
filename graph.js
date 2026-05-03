@@ -76,10 +76,15 @@ async function loadGraph(PersonA, PersonB) {
         //console.log(nodeNames[i])
     }
     const relList = new Array()
-    for(let i = 0; i < links.length -1; i++){
-        //console.log(nodeNames[links[i].source - 1]+links[i].type+nodeNames[links[i].target -1])
-        relList.push([nodeNames[links[i].source - 1], links[i].type, nodeNames[links[i].target -1]])
+
+    const idToName = {};
+    nodes.forEach(n => idToName[n.id] = n.name);
+
+    // Then replace the relList construction:
+    for (let i = 0; i < links.length - 1; i++) {
+        relList.push([idToName[links[i].source], links[i].type, idToName[links[i].target]]);
     }
+
     for(let i = 0; i < relList.length; i++){
         //console.log(relList[i])
     }
