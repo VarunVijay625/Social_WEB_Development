@@ -143,23 +143,23 @@ async function loadGraph(PersonA, PersonB) {
 function drawGraph(nodes, links) {
     const width = window.innerWidth;
     const height = window.innerHeight;
-
+ 
     const svg = d3.select("#graph")
         .attr("width", width)
         .attr("height", height);
-
+ 
     const simulation = d3.forceSimulation(nodes)
-        .force("link", d3.forceLink(links).id(d => String(d.id)).distance(120))
-        .force("charge", d3.forceManyBody().strength(-300))
+        .force("link", d3.forceLink(links).id(d => String(d.id)).distance(70))
+        .force("charge", d3.forceManyBody().strength(-150))
         .force("center", d3.forceCenter(width / 2, height / 2));
-
+ 
     const link = svg.append("g")
         .selectAll("line")
         .data(links)
         .enter().append("line")
         .attr("stroke", d => colorMap[d.type] || "white")
         .attr("stroke-width", 2);
-
+ 
     const node = svg.append("g")
         .selectAll("g")
         .data(nodes)
@@ -177,34 +177,44 @@ function drawGraph(nodes, links) {
                 d.fx = null; d.fy = null;
             })
         );
-
+ 
     node.append("rect")
-        .attr("width", 80)
-        .attr("height", 30)
-        .attr("x", -40)
-        .attr("y", -15)
-        .attr("rx", 6)
+        .attr("width", 55)
+        .attr("height", 22)
+        .attr("x", -27.5)
+        .attr("y", -11)
+        .attr("rx", 4)
         .attr("fill", "#B9D0B9")
         .attr("stroke", "#FFC800")
         .attr("stroke-width", 1.5);
-
+ 
     node.append("text")
         .text(d => d.name)
         .attr("text-anchor", "middle")
         .attr("dy", "0.35em")
-        .attr("font-size", "11px")
+        .attr("font-size", "8px")
         .attr("fill", "#0B5710");
 
+    const paddingX = 5;
+    const paddingTop = 0;
+    const paddingBottom = 170;
+ 
     simulation.on("tick", () => {
+        nodes.forEach(d => {
+            d.x = Math.max(paddingX, Math.min(width - paddingX, d.x));
+            d.y = Math.max(paddingTop, Math.min(height - paddingBottom, d.y));
+        });
+ 
         link
             .attr("x1", d => d.source.x)
             .attr("y1", d => d.source.y)
             .attr("x2", d => d.target.x)
             .attr("y2", d => d.target.y);
-
+ 
         node.attr("transform", d => `translate(${d.x},${d.y})`);
     });
 }
+
 // console.log('does it work')
 const submit_btn = document.getElementById("submit-btn")
 // if (submit_btn) {
