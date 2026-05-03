@@ -147,7 +147,9 @@ function drawGraph(nodes, links) {
     const svg = d3.select("#graph")
         .attr("width", width)
         .attr("height", height);
- 
+
+    svg.selectAll("*").remove();
+
     const simulation = d3.forceSimulation(nodes)
         .force("link", d3.forceLink(links).id(d => String(d.id)).distance(70))
         .force("charge", d3.forceManyBody().strength(-150))
